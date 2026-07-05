@@ -1,0 +1,50 @@
+---
+import type { TocItem } from "@/utils/generateToc";
+
+interface Props {
+	heading: TocItem;
+}
+
+const {
+	heading: { children, depth, slug, text },
+} = Astro.props;
+---
+
+<li class={`${depth > 2 ? "ms-2" : ""}`}>
+	<a
+		class={`toc-link line-clamp-2 ${depth <= 2 ? "mt-2" : "mt-1 text-xs"}`}
+		data-active="false"
+		data-toc-link
+		href={`#${slug}`}><span aria-hidden="true" class="me-0.5">#</span>{text}</a
+	>
+	{
+		!!children.length && (
+			<ol>
+				{children.map((subheading) => (
+					<Astro.self heading={subheading} />
+				))}
+			</ol>
+		)
+	}
+</li>
+
+<style>
+	.toc-link {
+		transition: color 160ms ease;
+	}
+
+	@media (min-width: 64rem) {
+		.toc-link {
+			color: color-mix(in oklch, var(--color-global-text) 82%, var(--color-accent) 18%);
+		}
+
+		.toc-link[data-active="true"] {
+			color: color-mix(in oklch, var(--color-accent) 78%, white);
+		}
+
+		.toc-link:hover,
+		.toc-link:focus-visible {
+			color: var(--color-accent);
+		}
+	}
+</style>

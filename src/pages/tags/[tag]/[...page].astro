@@ -1,0 +1,88 @@
+---
+import { render } from "astro:content";
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+import { Icon } from "astro-icon/components";
+import PostPreview from "@/components/blog/PostPreview.astro";
+import Pagination from "@/components/Paginator.astro";
+import { getAllPosts, getTagMeta, getUniqueTags } from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
+import { collectionDateSort } from "@/utils/date";
+import { withBase } from "@/utils/url";
+
+export const getStaticPaths = (async ({ paginate }) => {
+	const allPosts = await getAllPosts();
+	const sortedPosts = allPosts.sort(collectionDateSort);
+	const uniqueTags = getUniqueTags(sortedPosts);
+
+	return uniqueTags.flatMap((tag) => {
+		const postsWithTag = sortedPosts.filter((post) =>
+			post.data.tags.includes(tag),
+		);
+		return paginate(postsWithTag, {
+			pageSize: 10,
+			params: { tag },
+		});
+	});
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { page } = Astro.props as Props;
+const { tag } = Astro.params;
+const tagMeta = await getTagMeta(tag);
+
+const TagContent = tagMeta ? (await render(tagMeta)).Content : null;
+
+const meta = {
+	description:
+		tagMeta?.data.description ??
+		`Browse posts filed under ${tag}.`,
+	title: tagMeta?.data.title ?? `#${tag} Archive`,
+};
+
+const paginationProps = {
+	...(page.url.prev && {
+		prevUrl: {
+			text: "← Previous Tags",
+			url: page.url.prev,
+		},
+	}),
+	...(page.url.next && {
+		nextUrl: {
+			text: "Next Tags →",
+			url: page.url.next,
+		},
+	}),
+};
+---
+
+<PageLayout meta={meta}>
+	<nav class="mb-4" aria-label="Breadcrumbs">
+		<ul class="flex items-center">
+			<li class="flex items-center">
+				<a class="text-accent" href={withBase("/tags/")}>Tags</a>
+				<Icon aria-hidden="true" name="mdi:chevron-right" class="mx-1.5" />
+			</li>
+			<li aria-current="page" class="">
+				<span aria-hidden="true">#</span>{tag}
+			</li>
+		</ul>
+	</nav>
+	<h1 class="title mb-4 capitalize">
+		{tagMeta?.data.title ?? `#${tag} Archive`}
+	</h1>
+	<div class="index-content mb-4">
+		{tagMeta?.data.description && <p>{tagMeta.data.description}</p>}
+		{TagContent && <TagContent />}
+	</div>
+	<ul class="mt-8 space-y-1">
+		{
+			page.data.map((p) => (
+				<li class="grid gap-1 sm:grid-cols-[auto_1fr]">
+					<PostPreview as="h2" post={p} />
+				</li>
+			))
+		}
+	</ul>
+	<Pagination {...paginationProps} />
+</PageLayout>

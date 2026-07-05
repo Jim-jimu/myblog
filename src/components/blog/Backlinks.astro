@@ -1,0 +1,46 @@
+---
+import type { CollectionEntry } from "astro:content";
+import FormattedDate from "@/components/FormattedDate.astro";
+import { withBase } from "@/utils/url";
+
+interface Props {
+	posts: CollectionEntry<"blog">[];
+}
+
+const { posts } = Astro.props;
+---
+
+{
+	posts.length > 0 && (
+		<section class="not-prose mt-7">
+			<details class="group">
+				<summary
+					aria-level="2"
+					class="text-accent-2 marker:text-gray-600 group-hover:marker:text-accent focus-visible:marker:text-accent list-inside cursor-pointer text-lg font-semibold transition-colors sm:list-outside focus-visible:text-accent"
+					role="heading"
+				>
+					Backlinks
+				</summary>
+				<ul class="mt-3 space-y-1" role="list">
+					{posts.map((post) => (
+						<li class="grid sm:grid-cols-[auto_1fr]">
+							<FormattedDate
+								class="min-w-30 font-semibold text-gray-600 dark:text-gray-400"
+								date={post.data.publishDate}
+							/>
+							<div>
+								<a
+									aria-label={post.data.title}
+									class="typefolio-link"
+									href={withBase(`/blog/${post.id}/`)}
+								>
+									{post.data.title}
+								</a>
+							</div>
+						</li>
+					))}
+				</ul>
+			</details>
+		</section>
+	)
+}

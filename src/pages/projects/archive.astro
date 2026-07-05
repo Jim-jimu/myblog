@@ -1,0 +1,56 @@
+---
+import ArchivedProjectCard from "@/components/projects/ArchivedProjectCard.astro";
+import PageLayout from "@/layouts/Base.astro";
+import { withBase } from "@/utils/url";
+
+type ProjectItem = {
+	astroIcon?: string;
+	description: string;
+	href: string;
+	icon?: string;
+	reason: string;
+	title: string;
+};
+
+const projects: ProjectItem[] = [
+	{
+		icon: "🛰️",
+		title: "Aurora Ledger",
+		href: "https://example.com/aurora-ledger",
+		description:
+			"A fictional archival dashboard for tracking small research grants, field notes, and publication milestones across a distributed studio.",
+		reason: "🕊️ Retired after merging the strongest ideas into newer internal tools.",
+	},
+];
+
+const meta = {
+	title: "Archived Projects",
+	description: "Archived repositories from earlier work.",
+};
+---
+
+<PageLayout meta={meta}>
+	<section class="index-content grid gap-4">
+		<div class="grid gap-4">
+			<div>
+				<h1 class="title mb-4">Archived Projects 🕯️</h1>
+			</div>
+		</div>
+
+		<p>
+			<a class="typefolio-link-lighter" href={withBase("/projects/")}>
+				<span aria-hidden="true">←</span> Back to projects
+			</a>
+		</p>
+
+		<div class="grid gap-4">
+			<ul class="m-0 grid list-none gap-4 p-0 md:grid-cols-2" role="list">
+				{projects.map((project) => (
+					<li class="m-0">
+						<ArchivedProjectCard {...project} />
+					</li>
+				))}
+			</ul>
+		</div>
+	</section>
+</PageLayout>

@@ -1,0 +1,11 @@
+{
+	"recommendations": [
+		"astro-build.astro-vscode",
+    "biomejs.biome",
+		"unifiedjs.vscode-mdx",
+    "yzhang.markdown-all-in-one",
+		"ecmel.vscode-html-css",
+    "esbenp.prettier-vscode",
+	],
+	"unwantedRecommendations": []
+}

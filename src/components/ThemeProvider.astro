@@ -1,0 +1,75 @@
+{/* Inlined to avoid FOUC. This is a parser blocking script. */}
+<script is:inline>
+	const lightModePref = window.matchMedia("(prefers-color-scheme: light)");
+	const fallbackTheme = {
+		light: {
+			backgroundColor: "oklch(98% 0 0)",
+			color: "oklch(26.99% 0.0096 235.05)",
+		},
+		dark: {
+			backgroundColor: "oklch(23.64% 0.0045 248)",
+			color: "oklch(83.54% 0 264)",
+		},
+	};
+
+	function getUserPref() {
+		const storedTheme = typeof localStorage !== "undefined" && localStorage.getItem("theme");
+		return storedTheme || (lightModePref.matches ? "light" : "dark");
+	}
+
+	function setTheme(newTheme) {
+		if (newTheme !== "light" && newTheme !== "dark") {
+			return console.warn(
+				`Invalid theme value '${newTheme}' received. Expected 'light' or 'dark'.`,
+			);
+		}
+
+		const root = document.documentElement;
+		const fallback = fallbackTheme[newTheme];
+
+		root.style.backgroundColor = fallback.backgroundColor;
+		root.style.color = fallback.color;
+		root.style.colorScheme = newTheme;
+
+		// root already set to newTheme, exit early
+		if (newTheme === root.getAttribute("data-theme")) {
+			return;
+		}
+
+		root.setAttribute("data-theme", newTheme);
+
+		if (typeof localStorage !== "undefined") {
+			localStorage.setItem("theme", newTheme);
+		}
+	}
+
+	// initial setup
+	setTheme(getUserPref());
+
+	if (!window.__typefolioThemeProviderInitialized) {
+		window.__typefolioThemeProviderInitialized = true;
+
+		// apply the theme before the new document is swapped in
+		document.addEventListener("astro:before-swap", (event) => {
+			const nextTheme = getUserPref();
+			const nextRoot = event.newDocument.documentElement;
+			const fallback = fallbackTheme[nextTheme];
+
+			nextRoot.setAttribute("data-theme", nextTheme);
+			nextRoot.style.backgroundColor = fallback.backgroundColor;
+			nextRoot.style.color = fallback.color;
+			nextRoot.style.colorScheme = nextTheme;
+		});
+
+		// View Transitions hook to restore theme
+		document.addEventListener("astro:after-swap", () => setTheme(getUserPref()));
+
+		// listen for theme-change custom event, fired in src/components/ThemeToggle.astro
+		document.addEventListener("theme-change", (e) => {
+			setTheme(e.detail.theme);
+		});
+
+		// listen for prefers-color-scheme change.
+		lightModePref.addEventListener("change", (e) => setTheme(e.matches ? "light" : "dark"));
+	}
+</script>

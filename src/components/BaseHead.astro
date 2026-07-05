@@ -1,0 +1,80 @@
+---
+import { ClientRouter } from "astro:transitions";
+import ThemeProvider from "@/components/ThemeProvider.astro";
+import { siteConfig } from "@/site.config";
+import type { SiteMeta } from "@/types";
+import { withBase } from "@/utils/url";
+import "@/styles/global.css";
+
+type Props = SiteMeta;
+
+const { articleDate, description, ogImage, title } = Astro.props;
+
+const titleSeparator = "•";
+const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const socialImageURL = new URL(withBase(ogImage ? ogImage : "/social-card.png"), Astro.url).href;
+---
+
+<meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>{siteTitle}</title>
+<ThemeProvider />
+<link href={withBase("/fonts/google-fonts.css")} rel="stylesheet" />
+
+{/* Icons */}
+<link href={withBase("/icon.svg")} rel="icon" type="image/svg+xml" />
+{
+	import.meta.env.PROD && (
+		<>
+			{/* Favicon & Apple Icon */}
+			<link rel="icon" href={withBase("/favicon-32x32.png")} type="image/png" />
+			<link href={withBase("/icons/apple-touch-icon.png")} rel="apple-touch-icon" />
+			{/* Manifest */}
+			<link href={withBase("/manifest.webmanifest")} rel="manifest" />
+		</>
+	)
+}
+
+{/* Canonical URL */}
+<link href={canonicalURL} rel="canonical" />
+
+{/* Primary Meta Tags */}
+<meta content={siteTitle} name="title" />
+<meta content={description} name="description" />
+<meta content={siteConfig.author} name="author" />
+
+{/* Open Graph / Facebook */}
+<meta content={articleDate ? "article" : "website"} property="og:type" />
+<meta content={title} property="og:title" />
+<meta content={description} property="og:description" />
+<meta content={canonicalURL} property="og:url" />
+<meta content={siteConfig.title} property="og:site_name" />
+<meta content={siteConfig.ogLocale} property="og:locale" />
+<meta content={socialImageURL} property="og:image" />
+<meta content="1200" property="og:image:width" />
+<meta content="630" property="og:image:height" />
+{
+	articleDate && (
+		<>
+			<meta content={siteConfig.author} property="article:author" />
+			<meta content={articleDate} property="article:published_time" />
+		</>
+	)
+}
+
+{/* Twitter */}
+<meta content="summary_large_image" property="twitter:card" />
+<meta content={canonicalURL} property="twitter:url" />
+<meta content={title} property="twitter:title" />
+<meta content={description} property="twitter:description" />
+<meta content={socialImageURL} property="twitter:image" />
+
+{/* Sitemap */}
+<link href={withBase("/sitemap-index.xml")} rel="sitemap" />
+
+{/* RSS auto-discovery */}
+<link href={withBase("/rss.xml")} title="Blog" rel="alternate" type="application/rss+xml" />
+
+<meta content={Astro.generator} name="generator" />
+<ClientRouter />

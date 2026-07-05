@@ -1,0 +1,106 @@
+---
+import type { MarkdownHeading } from "astro";
+import { generateToc } from "@/utils/generateToc";
+import TOCHeading from "./TOCHeading.astro";
+
+interface Props {
+	headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+
+const toc = generateToc(headings);
+---
+
+<details open class="lg:sticky lg:top-12 lg:order-2 lg:-me-32 lg:basis-64" data-toc>
+	<summary class="title hover:marker:text-accent cursor-pointer text-lg">Table of Contents</summary>
+	<nav class="ms-4 lg:w-full">
+		<ol class="mt-4">
+			{toc.map((heading) => <TOCHeading heading={heading} />)}
+		</ol>
+	</nav>
+</details>
+
+<script>
+	function initTocObserver() {
+		const toc = document.querySelector("[data-toc]");
+		if (!(toc instanceof HTMLElement)) return;
+
+		const desktopMedia = window.matchMedia("(min-width: 1024px)");
+		const links = Array.from(
+			toc.querySelectorAll<HTMLAnchorElement>("a[data-toc-link][href^='#']"),
+		);
+		if (links.length === 0) return;
+
+		const headingIds = links
+			.map((link) => decodeURIComponent(link.hash.slice(1)))
+			.filter(Boolean);
+		const headings = headingIds
+			.map((id) => document.getElementById(id))
+			.filter((heading): heading is HTMLElement => heading instanceof HTMLElement);
+
+		let activeId = "";
+		let observer: IntersectionObserver | undefined;
+
+		const setActiveLink = (nextId: string) => {
+			if (activeId === nextId) return;
+			activeId = nextId;
+
+			for (const link of links) {
+				const isActive = decodeURIComponent(link.hash.slice(1)) === nextId;
+				link.dataset.active = String(isActive);
+				if (isActive) {
+					link.setAttribute("aria-current", "true");
+				} else {
+					link.removeAttribute("aria-current");
+				}
+			}
+		};
+
+		const syncActiveLink = () => {
+			if (!desktopMedia.matches || headings.length === 0) {
+				setActiveLink("");
+				return;
+			}
+
+			const passedHeadings = headings.filter((heading) => heading.getBoundingClientRect().top <= 140);
+			const fallbackHeading = passedHeadings.at(-1) ?? headings[0];
+			setActiveLink(fallbackHeading?.id ?? "");
+		};
+
+		const observeHeadings = () => {
+			observer?.disconnect();
+
+			if (!desktopMedia.matches || headings.length === 0) {
+				setActiveLink("");
+				return;
+			}
+
+			observer = new IntersectionObserver(syncActiveLink, {
+				rootMargin: "-96px 0px -65% 0px",
+				threshold: [0, 1],
+			});
+
+			for (const heading of headings) observer.observe(heading);
+
+			const hashId = decodeURIComponent(window.location.hash.slice(1));
+			setActiveLink(hashId || headings[0]?.id || "");
+			syncActiveLink();
+		};
+
+		for (const link of links) {
+			link.addEventListener("click", () => {
+				setActiveLink(decodeURIComponent(link.hash.slice(1)));
+			});
+		}
+
+		window.addEventListener("hashchange", syncActiveLink);
+		window.addEventListener("resize", observeHeadings);
+
+		desktopMedia.addEventListener("change", observeHeadings);
+
+		observeHeadings();
+	}
+
+	initTocObserver();
+</script>

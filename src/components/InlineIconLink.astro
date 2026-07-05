@@ -1,0 +1,43 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components";
+
+interface Props extends HTMLAttributes<"a"> {
+	href: string;
+	icon: string;
+	width?: number | string;
+	height?: number | string;
+	label?: string;
+}
+
+const {
+	href,
+	icon,
+	width = "1em",
+	height = "1em",
+	label = "Icon link",
+	target,
+	rel,
+	class: className,
+	style,
+	...rest
+} = Astro.props;
+
+const toCssSize = (value: number | string) => (typeof value === "number" ? `${value}px` : value);
+const resolvedWidth = toCssSize(width);
+const resolvedHeight = toCssSize(height);
+const resolvedRel = rel ?? (target === "_blank" ? "noopener noreferrer" : undefined);
+const cssVars = `--inline-icon-link-width:${resolvedWidth};--inline-icon-link-height:${resolvedHeight};`;
+---
+
+<a
+	class:list={["inline-icon-link", className]}
+	href={href}
+	rel={resolvedRel}
+	style={`${cssVars}${style ? String(style) : ""}`}
+	target={target}
+	{...rest}
+>
+	<Icon aria-hidden="true" class="inline-icon-link__icon" focusable="false" name={icon} />
+	<span class="sr-only">{label}</span>
+</a>

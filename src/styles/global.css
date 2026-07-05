@@ -1,0 +1,207 @@
+/* would like to ignore ./src/pages/og-image/[slug].png.ts */
+@import "tailwindcss";
+@import "katex/dist/katex.min.css";
+/* config for tailwindcss-typography plugin */
+@config "../../tailwind.config.ts";
+
+/* use a selector-based strategy for dark mode */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* you could refactor below to use light-dark(), depending on your target audience */
+@theme {
+	--font-sans:
+		"Open Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Segoe UI",
+		ui-sans-serif, system-ui, sans-serif;
+	--color-global-bg: oklch(98% 0 0);
+	--color-global-text: oklch(26.99% 0.0096 235.05);
+	--color-link: oklch(0.5095 0.1682 79.31);
+	--color-accent: oklch(0.6071 0.1868 33.91);
+	--color-accent-2: oklch(30.00% 0 0);
+	--color-quote: oklch(0.5071 0.1868 33.91);
+	--color-inline-code-bg: rgb(0 0 0 / 6%);
+	--color-rule: oklch(82.032% 0.00009 271.152);
+}
+
+@layer base {
+	html {
+		color-scheme: light dark;
+		accent-color: var(--color-accent);
+		background-color: var(--color-global-bg);
+		color: var(--color-global-text);
+		scrollbar-gutter: stable;
+		text-autospace: normal;
+
+		&[data-theme="light"] {
+			color-scheme: light;
+		}
+
+		&[data-theme="dark"] {
+			color-scheme: dark;
+			--color-global-bg: oklch(23.64% 0.0045 248);
+			--color-global-text: oklch(83.54% 0 264);
+			--color-link: oklch(0.5278 0.0993 33.59);
+			--color-accent: oklch(0.7505 0.1682 79.31);
+			--color-accent-2: oklch(90.66% 0 0);
+			--color-quote: oklch(0.6505 0.1682 79.31);
+			--color-inline-code-bg: rgb(255 255 255 / 10%);
+			--color-rule: oklch(46% 0.01 255);
+		}
+	}
+
+	body {
+		@apply leading-normal tracking-[0.02em];
+		background-color: var(--color-global-bg);
+		color: var(--color-global-text);
+		word-spacing: 0.06em;
+	}
+
+	:target {
+		scroll-margin-block: 5ex;
+	}
+
+	@view-transition {
+		navigation: auto;
+	}
+
+	/* Astro image responsive styles, modified from -> https://docs.astro.build/en/guides/images/#responsive-image-styles */
+	:where([data-astro-image]) {
+		object-fit: var(--fit);
+		object-position: var(--pos);
+	}
+	[data-astro-image="full-width"] {
+		width: 100%;
+	}
+	[data-astro-image="constrained"] {
+		max-width: 100%;
+	}
+}
+
+@layer components {
+	@import "./components/admonition.css";
+	@import "./components/github-card.css";
+	@import "./components/inline-icon-link.css";
+	@import "./components/projects-card.css";
+
+	.typefolio-link {
+		@apply hover:decoration-link underline underline-offset-2 hover:decoration-2;
+	}
+
+	.typefolio-link-lighter {
+		@apply underline decoration-[0.06em] underline-offset-[0.16em] decoration-current/35 transition-[text-decoration-color,text-decoration-thickness] duration-150 ease-in-out hover:decoration-link hover:decoration-[0.09em] focus-visible:decoration-link focus-visible:decoration-[0.09em];
+	}
+
+	.title {
+		@apply text-accent-2 text-2xl font-semibold wrap-break-word;
+	}
+
+	.site-title-highlight {
+		position: relative;
+		display: inline-block;
+		white-space: nowrap;
+		user-select: none;
+		-webkit-user-select: none;
+		z-index: 0;
+	}
+
+	.site-title-highlight::selection {
+		background: transparent;
+		color: inherit;
+	}
+
+	.site-title-highlight::after {
+		content: "";
+		position: absolute;
+		left: 50%;
+		top: 60%;
+		width: 90%;
+		height: 30%;
+		transform: translateX(-50%);
+		background: color-mix(in oklch, var(--color-accent) 60%, white);
+		opacity: 1;
+		z-index: -1;
+		pointer-events: none;
+	}
+
+	html[data-theme="dark"] .site-title-highlight::after {
+		background: color-mix(in oklch, var(--color-accent) 80%, black);
+		opacity: 1;
+	}
+
+	.index-content p {
+		line-height: 1.5;
+	}
+
+	.index-content p + p {
+		margin-block-start: 0.6em;
+	}
+
+	.index-content li {
+		line-height: 1.5;
+	}
+
+	.index-content ul,
+	.index-content ol {
+		margin-block: 1em;
+		padding-inline-start: 1.4em;
+	}
+
+	.index-content li + li {
+		margin-block-start: 0.2em;
+	}
+
+	.index-divider {
+		border: 0;
+		height: 1px;
+		background-image: repeating-linear-gradient(
+			to right,
+			color-mix(in oklch, var(--color-rule) 55%, transparent) 0 4px,
+			transparent 4px 6px
+		);
+	}
+}
+
+.gallery-rail-scrollbar {
+	scrollbar-width: thin;
+	scrollbar-color: color-mix(in oklch, var(--color-rule) 85%, transparent) transparent;
+}
+
+.gallery-rail-scrollbar::-webkit-scrollbar {
+	height: 0.5rem;
+}
+
+.gallery-rail-scrollbar::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.gallery-rail-scrollbar::-webkit-scrollbar-thumb {
+	background: color-mix(in oklch, var(--color-rule) 85%, transparent);
+	border-radius: 999px;
+}
+
+/* Keep copy button styles outside Tailwind layers: Expressive Code injects `.copy` markup at runtime,
+ * so layer-based rules can be tree-shaken away before they ever reach the browser. */
+:root .expressive-code .copy button {
+	width: 1.75rem;
+	height: 1.75rem;
+}
+
+:root .expressive-code .copy button::after {
+	margin: 0.35rem;
+}
+
+@media (hover: hover) {
+	:root .expressive-code .copy button {
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+}
+
+@utility prose {
+	--tw-prose-body: var(--color-global-text);
+	--tw-prose-bold: var(--color-global-text);
+	--tw-prose-bullets: var(--color-global-text);
+	--tw-prose-code: var(--color-global-text);
+	--tw-prose-headings: var(--color-accent-2);
+	--tw-prose-links: var(--color-global-text);
+	--tw-prose-quotes: var(--color-quote);
+}

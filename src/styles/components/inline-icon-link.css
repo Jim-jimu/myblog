@@ -1,0 +1,7 @@
+.inline-icon-link {
+	@apply relative inline-block h-[1em] w-(--inline-icon-link-width) leading-none align-middle overflow-visible;
+}
+
+.inline-icon-link__icon {
+	@apply absolute top-1/2 left-1/2 block h-(--inline-icon-link-height) w-(--inline-icon-link-width) -translate-x-1/2 -translate-y-1/2;
+}

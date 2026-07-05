@@ -1,0 +1,23 @@
+---
+import { siteConfig } from "@/site.config";
+
+const year = new Date().getFullYear();
+const showNetlifyCredit = import.meta.env.PUBLIC_SHOW_NETLIFY_CREDIT === "true";
+---
+
+<footer
+	id="site-footer"
+	class="mt-auto flex w-full flex-col items-center justify-center gap-y-2 pt-16 pb-4 text-center align-top font-semibold text-gray-600 sm:flex-row sm:justify-between sm:text-xs dark:text-gray-400"
+>
+	<div class="me-0 sm:me-4">
+		Copyright&nbsp;&copy;&nbsp;{year},&nbsp;{siteConfig.author}.<span class="inline-block">&nbsp;Built with <a class="typefolio-link" href="https://astro.build" target="_blank" rel="noreferrer noopener">Astro</a> &amp; <a class="typefolio-link" href="https://astro-typefolio.whliao.me" target="_blank" rel="noreferrer noopener">Typefolio</a>.</span>
+		{
+			showNetlifyCredit && (
+				<span class="inline-block">
+          This site is powered by
+					<a class="typefolio-link" href="https://www.netlify.com" target="_blank" rel="noreferrer noopener">Netlify</a>.
+				</span>
+			)
+		}
+	</div>
+</footer>

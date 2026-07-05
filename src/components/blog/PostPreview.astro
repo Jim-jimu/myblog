@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { HTMLTag, Polymorphic } from "astro/types";
+import FormattedDate from "@/components/FormattedDate.astro";
+import { withBase } from "@/utils/url";
+
+type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & {
+	post: CollectionEntry<"blog">;
+	withDesc?: boolean;
+	linkClass?: string;
+};
+
+const {
+	as: Tag = "div",
+	post,
+	withDesc = false,
+	linkClass = "typefolio-link-lighter",
+} = Astro.props;
+---
+
+<FormattedDate
+	class="min-w-30 font-semibold text-gray-600 dark:text-gray-400"
+	date={post.data.publishDate}
+/>
+<Tag>
+	{post.data.draft && <span class="text-red-500">(Draft) </span>}
+	<a class={linkClass} href={withBase(`/blog/${post.id}/`)}>
+		{post.data.title}
+	</a>
+</Tag>
+{withDesc && <q class="line-clamp-3 italic">{post.data.description}</q>}

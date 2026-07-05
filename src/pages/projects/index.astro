@@ -1,0 +1,140 @@
+---
+import ProjectCard from "@/components/projects/ProjectCard.astro";
+import PageLayout from "@/layouts/Base.astro";
+import { withBase } from "@/utils/url";
+
+type ProjectItem = {
+	astroIcon?: string;
+	description: string;
+	href: string;
+	icon?: string;
+	title: string;
+};
+
+type ProjectGroup = {
+	projects: ProjectItem[];
+	title: string;
+};
+
+const projectGroups: ProjectGroup[] = [
+	{
+		title: "Core Stack",
+		projects: [
+			{
+				astroIcon: "mdi:rocket-launch",
+				title: "Astro",
+				href: "https://github.com/withastro/astro",
+				description:
+					"The official Astro framework repository. Typefolio is built on Astro's content-first architecture, routing, integrations, and static output pipeline.",
+			},
+			{
+				astroIcon: "mdi:tailwind",
+				title: "Tailwind CSS",
+				href: "https://github.com/tailwindlabs/tailwindcss",
+				description:
+					"The official Tailwind CSS repository. This theme uses Tailwind CSS v4 for utility styling, typography defaults, and layout composition.",
+			},
+			{
+				icon: "✅",
+				title: "Biome",
+				href: "https://github.com/biomejs/biome",
+				description:
+					"The official Biome repository. It keeps the project formatting and code quality checks consistent through the shared `pnpm check` workflow.",
+			},
+		],
+	},
+	{
+		title: "Content & Site Tooling",
+		projects: [
+			{
+				astroIcon: "mdi:magnify",
+				title: "Pagefind",
+				href: "https://github.com/Pagefind/pagefind",
+				description:
+					"The official Pagefind repository. Typefolio uses it to generate the static search index after production builds.",
+			},
+			{
+				icon: "😀",
+				title: "Astro Icon",
+				href: "https://github.com/natemoo-re/astro-icon",
+				description:
+					"The official Astro Icon repository. It powers inline icons throughout the theme, including UI accents and feature-level visual markers.",
+			},
+			{
+				icon: "🖼️",
+				title: "Satori",
+				href: "https://github.com/vercel/satori",
+				description:
+					"The official Satori repository. It is used for generating social preview images and other image-based metadata in the Astro pipeline.",
+			},
+		],
+	},
+	{
+		title: "Acknowledgments",
+		projects: [
+			{
+				icon: "📄",
+				title: "Typefolio",
+				href: "https://github.com/whliao5am/astro-theme-typefolio",
+				description:
+					"This repository itself. It brings together the stack above into a typography-first Astro theme for writing, galleries, and project pages.",
+			},
+			{
+				icon: "🌵",
+				title: "Astro Theme Cactus",
+				href: "https://github.com/chrismwilliams/astro-theme-cactus",
+				description:
+					"The main upstream inspiration for this project. This card is here as a visible thank-you for the original design direction, structure, and implementation ideas.",
+			},
+		],
+	},
+];
+
+const meta = {
+	title: "Projects",
+	description: "Official repositories and acknowledgments behind Typefolio.",
+};
+---
+
+<PageLayout meta={meta}>
+	<section class="index-content grid gap-4">
+		<div>
+			<h1 class="title mb-4">Projects</h1>
+			<p>
+				This page highlights the repositories behind Typefolio. It serves as both a quick showcase and a visible note of thanks.
+			</p>
+		</div>
+
+		<div class="grid gap-4">
+			{
+				projectGroups.map((group) => (
+					<section
+						class="grid gap-4"
+						aria-labelledby={`projects-group-${group.title.toLowerCase().replace(/\s+/g, "-")}`}
+					>
+						<h2
+							class="title mb-0 text-xl"
+							id={`projects-group-${group.title.toLowerCase().replace(/\s+/g, "-")}`}
+						>
+							{group.title}
+						</h2>
+						<ul class="m-0 grid list-none gap-4 p-0 md:grid-cols-2" role="list">
+							{group.projects.map((project) => (
+								<li class="m-0">
+									<ProjectCard {...project} />
+								</li>
+							))}
+						</ul>
+					</section>
+				))
+			}
+		</div>
+
+		<p class="mt-6">
+      Some projects live on, while others have fulfilled their purpose. 🕯️
+    <a class="typefolio-link-lighter" href={withBase("/projects/archive/")}>
+      View archived projects <span aria-hidden="true">→</span>
+    </a>
+  </p>
+	</section>
+</PageLayout>

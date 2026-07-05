@@ -1,0 +1,41 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+
+const meta = {
+	description:
+		"About the writing scope and publishing workflow for Jimjimu Notes.",
+	title: "About",
+};
+---
+
+<PageLayout meta={meta}>
+	<h1 class="title mb-4">About</h1>
+	<div class="index-content">
+		<p>
+			This site is built with Astro Typefolio and is used to publish technical
+			articles, course notes, project records, and Typst handouts.
+		</p>
+		<p>
+			Regular posts are written in Markdown or MDX. Handouts, assignments, and
+			reports that need formal typesetting are written in Typst, exported as
+			PDFs, and embedded in their related pages.
+		</p>
+		<p>The current template already includes:</p>
+		<ul class="list-inside list-disc" role="list">
+			<li>Markdown / MDX posts and tag archives</li>
+			<li>KaTeX math rendering</li>
+			<li>Syntax highlighting and titled code blocks</li>
+			<li>Pagefind static search</li>
+			<li>RSS, sitemap, and Open Graph image generation</li>
+			<li>Light and dark themes</li>
+		</ul>
+		<p>
+			Template source: <a
+				class="typefolio-link inline-block"
+				href="https://github.com/whliao5am/astro-theme-typefolio"
+				rel="noreferrer"
+				target="_blank">https://github.com/whliao5am/astro-theme-typefolio</a
+			>
+		</p>
+	</div>
+</PageLayout>

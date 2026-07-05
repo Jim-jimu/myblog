@@ -1,0 +1,28 @@
+---
+interface Props {
+	points: string[];
+}
+
+const { points } = Astro.props;
+const orderedPointRegex = /^\d+\.\s+(.*)$/;
+const isOrderedList =
+	points.length > 0 && points.every((point) => orderedPointRegex.test(point.trim()));
+const renderedPoints = isOrderedList
+	? points.map((point) => point.trim().replace(orderedPointRegex, "$1"))
+	: points;
+---
+
+<div class="mb-8" role="note" aria-label="Article summary">
+	<h2 class="mt-0 before:text-gray-600! hover:before:text-gray-600!">TLDR</h2>
+	{
+		isOrderedList ? (
+			<ol>
+				{renderedPoints.map((point) => <li>{point}</li>)}
+			</ol>
+		) : (
+			<ul>
+				{renderedPoints.map((point) => <li>{point}</li>)}
+			</ul>
+		)
+	}
+</div>

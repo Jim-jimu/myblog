@@ -1,0 +1,39 @@
+.project-card {
+	--project-card-border: color-mix(in oklch, var(--color-global-text) 16%, var(--color-global-bg));
+	--project-card-shadow: 0.2rem 0.2rem 0
+		color-mix(in oklch, var(--color-global-text) 16%, var(--color-global-bg));
+	@apply grid min-h-full content-start gap-2 border px-4 pt-3 pr-3 pb-3;
+	grid-template-rows: auto 1fr;
+	background: var(--color-global-bg);
+	border-color: var(--project-card-border);
+	box-shadow: var(--project-card-shadow);
+}
+
+html[data-theme="dark"] .project-card {
+	--project-card-border: color-mix(in oklch, var(--color-global-text) 10%, var(--color-global-bg));
+	--project-card-shadow: 0.2rem 0.2rem 0
+		color-mix(in oklch, var(--color-global-text) 10%, var(--color-global-bg));
+}
+
+.project-card-heading {
+	@apply relative;
+}
+
+.project-card-icon {
+	@apply text-accent-2 pointer-events-none absolute top-0 left-0 inline-flex items-center justify-center text-2xl leading-none font-bold;
+}
+
+.project-card-title {
+	@apply text-accent-2 m-0 text-base leading-[1.45] font-semibold;
+	padding-inline-start: calc(2.2rem);
+}
+
+.project-card-astro-icon {
+	inline-size: 100%;
+	block-size: 100%;
+}
+
+.project-card-description {
+	@apply m-0;
+	align-self: start;
+}

@@ -1,0 +1,230 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
+import "glightbox/dist/css/glightbox.css";
+import FormattedDate from "@/components/FormattedDate.astro";
+
+interface Props {
+	entry: CollectionEntry<"gallery">;
+	index: number;
+}
+
+const { entry, index } = Astro.props;
+const railId = `gallery-rail-${index}-${entry.id.replaceAll("/", "-")}`;
+const labelId = `${railId}-title`;
+const mobilePreviewHeight = 224;
+const desktopPreviewHeight = 248;
+---
+
+<gallery-rail class="block min-w-0 max-w-full" data-gallery-root={railId}>
+	<section aria-labelledby={labelId} class="grid min-w-0 max-w-full gap-2 overflow-x-hidden">
+		<div class="grid min-w-0 gap-2">
+			<div class="flex items-baseline justify-between gap-3">
+				<h2 class="title mb-0 min-w-0 flex-1 text-xl" id={labelId}>{entry.data.title}</h2>
+				<FormattedDate
+					class="min-w-30 shrink-0 text-right font-semibold text-gray-600 dark:text-gray-400"
+					date={entry.data.publishDate}
+				/>
+			</div>
+			<p class="max-w-2xl">{entry.data.description}</p>
+		</div>
+
+		<div class="relative min-w-0 max-w-full overflow-x-hidden">
+			<button
+				aria-controls={railId}
+				class="absolute left-2 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-zinc-200/60 text-global-text shadow-sm backdrop-blur-md transition hover:border-black/20 hover:bg-zinc-200/80 disabled:cursor-not-allowed disabled:opacity-35 dark:border-white/10 dark:bg-black/60 dark:hover:border-white/20 dark:hover:bg-black/70 sm:inline-flex"
+				data-gallery-prev
+				type="button"
+			>
+				<Icon aria-hidden="true" class="h-5 w-5" focusable="false" name="mdi:chevron-left" />
+				<span class="sr-only">Scroll {entry.data.title} left</span>
+			</button>
+
+			<div
+				aria-label={`${entry.data.title} image rail`}
+				class="gallery-rail-scrollbar flex w-full min-w-0 max-w-full snap-x snap-mandatory gap-2 overflow-x-auto overflow-y-hidden scroll-smooth px-0 py-1 sm:pl-0 sm:pr-0"
+				data-gallery-track
+				id={railId}
+				tabindex="0"
+			>
+				{
+					entry.data.images.map((image, imageIndex) => {
+						const aspectRatio = image.src.width / image.src.height;
+						const imageTitle = image.title ?? undefined;
+						const imageDescription = image.caption ?? undefined;
+						const imageAlt = image.title ?? image.caption ?? "";
+						const mobilePreviewWidth = Math.min(
+							image.src.width,
+							Math.max(160, Math.round(mobilePreviewHeight * aspectRatio)),
+						);
+						const desktopPreviewWidth = Math.min(
+							image.src.width,
+							Math.max(180, Math.round(desktopPreviewHeight * aspectRatio)),
+						);
+						const responsiveWidths = [
+							mobilePreviewWidth,
+							desktopPreviewWidth,
+							Math.min(image.src.width, mobilePreviewWidth * 2),
+							Math.min(image.src.width, desktopPreviewWidth * 2),
+						]
+							.filter((width, candidateIndex, widths) => widths.indexOf(width) === candidateIndex)
+							.sort((firstWidth, secondWidth) => firstWidth - secondWidth);
+						const imageSizes = `(min-width: 640px) ${desktopPreviewWidth}px, ${mobilePreviewWidth}px`;
+
+						return (
+							<a
+								class="group block shrink-0 snap-start overflow-hidden outline-none transition focus:outline-none"
+								data-gallery={railId}
+								data-desc-position={imageDescription ? image.descPosition : undefined}
+								data-description={imageDescription}
+								data-title={imageTitle}
+								href={image.src.src}
+							>
+								<Image
+									alt={imageAlt}
+									class="h-56 w-auto max-w-none cursor-zoom-in object-contain transition-transform duration-300 ease-out motion-safe:group-hover:scale-[1.05] motion-safe:group-focus-visible:scale-[1.05] sm:h-62"
+									height={image.src.height}
+									loading={imageIndex === 0 && index === 0 ? "eager" : "lazy"}
+									sizes={imageSizes}
+									src={image.src}
+									width={image.src.width}
+									widths={responsiveWidths}
+								/>
+							</a>
+						);
+					})
+				}
+			</div>
+
+			<button
+				aria-controls={railId}
+				class="absolute right-2 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-zinc-200/60 text-global-text shadow-sm backdrop-blur-md transition hover:border-black/20 hover:bg-zinc-200/80 disabled:cursor-not-allowed disabled:opacity-35 dark:border-white/10 dark:bg-black/60 dark:hover:border-white/20 dark:hover:bg-black/70 sm:inline-flex"
+				data-gallery-next
+				type="button"
+			>
+				<Icon aria-hidden="true" class="h-5 w-5" focusable="false" name="mdi:chevron-right" />
+				<span class="sr-only">Scroll {entry.data.title} right</span>
+			</button>
+		</div>
+	</section>
+</gallery-rail>
+
+<script>
+	import GLightbox from "glightbox";
+
+	class GalleryRail extends HTMLElement {
+		#controller = new AbortController();
+		#lightbox?: ReturnType<typeof GLightbox>;
+		#lightboxTriggers: HTMLAnchorElement[] = [];
+		#lastFocusedTrigger: HTMLElement | null = null;
+		#nextButton: HTMLButtonElement | null;
+		#previousButton: HTMLButtonElement | null;
+		#track: HTMLDivElement | null;
+		#resizeObserver?: ResizeObserver;
+		#galleryId: string | null;
+
+		constructor() {
+			super();
+			this.#track = this.querySelector<HTMLDivElement>("[data-gallery-track]");
+			this.#previousButton = this.querySelector<HTMLButtonElement>("[data-gallery-prev]");
+			this.#nextButton = this.querySelector<HTMLButtonElement>("[data-gallery-next]");
+			this.#galleryId = this.dataset.galleryRoot ?? null;
+			this.#lightboxTriggers = Array.from(
+				this.querySelectorAll<HTMLAnchorElement>("[data-gallery]"),
+			);
+		}
+
+		connectedCallback() {
+			if (!this.#track || !this.#galleryId) {
+				console.warn("Gallery rail: track not found");
+				return;
+			}
+
+			this.#previousButton?.addEventListener("click", () => this.#scrollByViewport(-1), {
+				signal: this.#controller.signal,
+			});
+			this.#nextButton?.addEventListener("click", () => this.#scrollByViewport(1), {
+				signal: this.#controller.signal,
+			});
+			this.#track.addEventListener("scroll", this.#syncButtons, {
+				passive: true,
+				signal: this.#controller.signal,
+			});
+
+			this.#resizeObserver = new ResizeObserver(() => this.#syncButtons());
+			this.#resizeObserver.observe(this.#track);
+
+			for (const trigger of this.#lightboxTriggers) {
+				trigger.addEventListener("click", this.#prepareLightboxOpen, {
+					capture: true,
+					signal: this.#controller.signal,
+				});
+			}
+
+			this.#lightbox = GLightbox({
+				loop: true,
+				selector: `a[data-gallery="${this.#galleryId}"]`,
+				touchNavigation: true,
+			});
+			this.#lightbox.on("open", () => {
+				const lightboxContainer = document.getElementById("glightbox-body");
+				lightboxContainer?.focus();
+			});
+			this.#lightbox.on("close", () => {
+				this.#lastFocusedTrigger?.focus();
+			});
+
+			this.#syncButtons();
+		}
+
+		disconnectedCallback() {
+			this.#controller.abort();
+			this.#resizeObserver?.disconnect();
+			this.#lightbox?.destroy();
+		}
+
+		#scrollByViewport(direction: 1 | -1) {
+			if (!this.#track) return;
+
+			this.#track.scrollBy({
+				left: this.#track.clientWidth * direction,
+				behavior: "smooth",
+			});
+		}
+
+		#syncButtons = () => {
+			if (!this.#track) return;
+
+			const { clientWidth, scrollLeft, scrollWidth } = this.#track;
+			const maxScrollLeft = scrollWidth - clientWidth;
+			const tolerance = 6;
+			const atStart = scrollLeft <= tolerance;
+			const atEnd = scrollLeft >= maxScrollLeft - tolerance || maxScrollLeft <= tolerance;
+			const showDesktopButtons = window.matchMedia("(min-width: 640px)").matches;
+
+			if (this.#previousButton) {
+				this.#previousButton.disabled = atStart;
+				this.#previousButton.style.display = showDesktopButtons && !atStart ? "inline-flex" : "none";
+			}
+			if (this.#nextButton) {
+				this.#nextButton.disabled = atEnd;
+				this.#nextButton.style.display = showDesktopButtons && !atEnd ? "inline-flex" : "none";
+			}
+		};
+
+		#prepareLightboxOpen = (event: Event) => {
+			const trigger = event.currentTarget;
+			if (!(trigger instanceof HTMLElement)) return;
+
+			this.#lastFocusedTrigger = trigger;
+			if (document.activeElement instanceof HTMLElement) {
+				document.activeElement.blur();
+			}
+		};
+	}
+
+	if (!customElements.get("gallery-rail")) {
+		customElements.define("gallery-rail", GalleryRail);
+	}
+</script>

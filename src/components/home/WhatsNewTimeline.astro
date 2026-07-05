@@ -1,0 +1,97 @@
+---
+export type WhatsNewKind = "award" | "paper" | "talk" | "milestone" | "service";
+
+export interface WhatsNewItem {
+	date: string;
+	kind: WhatsNewKind;
+	label: string;
+	description: string;
+	href?: string;
+}
+
+interface Props {
+	items: WhatsNewItem[];
+}
+
+const { items } = Astro.props;
+
+const kindStyles: Record<WhatsNewKind, { badgeClass: string; dotClass: string }> = {
+	award: {
+		badgeClass: "text-rose-700 dark:text-rose-650",
+		dotClass: "bg-rose-500 dark:bg-rose-300",
+	},
+	milestone: {
+		badgeClass: "text-yellow-700 dark:text-yellow-600",
+		dotClass: "bg-yellow-600 dark:bg-yellow-300",
+	},
+	paper: {
+		badgeClass: "text-sky-700 dark:text-sky-600",
+		dotClass: "bg-sky-600 dark:bg-sky-300",
+	},
+	talk: {
+		badgeClass: "text-emerald-700 dark:text-emerald-600",
+		dotClass: "bg-emerald-600 dark:bg-emerald-300",
+	},
+	service: {
+		badgeClass: "text-purple-600 dark:text-purple-600",
+		dotClass: "bg-purple-600 dark:bg-purple-300",
+	},
+};
+---
+
+{
+	items.length > 0 && (
+		<section class="mt-8">
+			<div class="mb-4 flex items-end justify-between gap-3">
+				<div>
+					<h2 class="title text-xl">What&apos;s New?</h2>
+				</div>
+			</div>
+
+			<ol class="relative ml-0 space-y-3 pl-0" role="list">
+				{items.map((item) => {
+					const styles = kindStyles[item.kind];
+
+					return (
+						<li class="grid list-none grid-cols-[1rem_minmax(0,1fr)] gap-x-1 gap-y-1 sm:grid-cols-[1.25rem_minmax(0,1fr)]">
+							<div class="relative flex justify-center pt-1">
+								<div class="bg-global-text/12 absolute bottom-0.5 left-1/2 top-1 w-px -translate-x-1/2" />
+								<span
+									aria-hidden="true"
+									class:list={[
+										"relative h-2 w-2 rounded-full bg-gray-500 ring-3 ring-gray-200 dark:bg-gray-600 dark:ring-gray-800",
+									]}
+								/>
+							</div>
+
+							<div>
+								<div class="flex flex-wrap items-center gap-x-2 gap-y-1 font-semibold">
+									<span
+										class:list={[
+											"text-xs font-semibold tracking-[0.08em]",
+											styles.badgeClass,
+										]}
+									>
+										[{item.label}]
+									</span>
+									<span class="text-xs font-semibold text-gray-600 dark:text-gray-400">{item.date}</span>
+								</div>
+								<div class="leading-normal">
+									{
+										item.href ? (
+											<a class="typefolio-link-lighter min-w-0" href={item.href}>
+												{item.description}
+											</a>
+										) : (
+											<p class="min-w-0">{item.description}</p>
+										)
+									}
+								</div>
+							</div>
+						</li>
+					);
+				})}
+			</ol>
+		</section>
+	)
+}

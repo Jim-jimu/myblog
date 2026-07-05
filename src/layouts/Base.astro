@@ -1,0 +1,124 @@
+---
+import BaseHead from "@/components/BaseHead.astro";
+import Footer from "@/components/layout/Footer.astro";
+import Header from "@/components/layout/Header.astro";
+import SkipLink from "@/components/SkipLink.astro";
+import { siteConfig } from "@/site.config";
+import type { SiteMeta } from "@/types";
+
+interface Props {
+	meta: SiteMeta;
+}
+
+const {
+	meta: { articleDate, description = siteConfig.description, ogImage, title },
+} = Astro.props;
+---
+
+<html class="scroll-smooth" lang={siteConfig.lang}>
+	<head>
+		<BaseHead articleDate={articleDate} description={description} ogImage={ogImage} title={title} />
+	</head>
+	<body
+		class="bg-global-bg text-global-text mx-auto flex min-h-screen max-w-3xl flex-col px-4 pt-16 font-sans text-sm font-normal antialiased sm:px-8"
+	>
+		<SkipLink />
+		<Header />
+		<main id="main">
+			<slot />
+		</main>
+		<Footer />
+		<script>
+			import { pangu } from "pangu/browser";
+
+			const speculationRules = {
+				prefetch: [
+					{
+						where: {
+							href_matches: "/*",
+						},
+						eagerness: "moderate",
+					},
+				],
+			};
+			const speculationRulesSelector =
+				'script[type="speculationrules"][data-typefolio-speculation]';
+			const supportsSpeculationRules =
+				typeof HTMLScriptElement.supports === "function" &&
+				HTMLScriptElement.supports("speculationrules");
+			const resumeNavigationThresholdMs = 15_000;
+			let hiddenAt = 0;
+			let shouldBypassClientRouter = false;
+
+			const ensureSpeculationRules = () => {
+				if (!supportsSpeculationRules) return;
+				if (document.querySelector(speculationRulesSelector)) return;
+
+				const script = document.createElement("script");
+				script.type = "speculationrules";
+				script.dataset.typefolioSpeculation = "true";
+				script.textContent = JSON.stringify(speculationRules);
+				document.head.appendChild(script);
+			};
+
+			const applyPanguToMain = () => {
+				const mainEl = document.getElementById("main");
+				if (mainEl) pangu.spacingNode(mainEl);
+			};
+			const onPageLoad = () => {
+				ensureSpeculationRules();
+				pangu.autoSpacingPage();
+				applyPanguToMain();
+			};
+
+			const shouldUseNativeNavigation = (anchor: HTMLAnchorElement, event: MouseEvent) => {
+				if (!shouldBypassClientRouter) return false;
+				if (event.defaultPrevented) return false;
+				if (event.button !== 0) return false;
+				if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return false;
+				if (anchor.target && anchor.target !== "_self") return false;
+				if (anchor.hasAttribute("download")) return false;
+
+				const url = new URL(anchor.href, window.location.href);
+				if (url.origin !== window.location.origin) return false;
+				if (url.pathname === window.location.pathname && url.search === window.location.search) {
+					return false;
+				}
+
+				return true;
+			};
+
+			const onVisibilityChange = () => {
+				if (document.visibilityState === "hidden") {
+					hiddenAt = window.performance.now();
+					return;
+				}
+
+				if (!hiddenAt) return;
+
+				shouldBypassClientRouter =
+					window.performance.now() - hiddenAt >= resumeNavigationThresholdMs;
+				hiddenAt = 0;
+			};
+
+			const onDocumentClick = (event: MouseEvent) => {
+				if (!(event.target instanceof Element)) return;
+
+				const anchor = event.target.closest("a[href]");
+				if (!(anchor instanceof HTMLAnchorElement)) return;
+				if (!shouldUseNativeNavigation(anchor, event)) return;
+
+				shouldBypassClientRouter = false;
+				event.preventDefault();
+				window.location.assign(anchor.href);
+			};
+
+			ensureSpeculationRules();
+			onPageLoad();
+
+			document.addEventListener("visibilitychange", onVisibilityChange);
+			document.addEventListener("click", onDocumentClick, { capture: true });
+			document.addEventListener("astro:page-load", onPageLoad);
+		</script>
+	</body>
+</html>

@@ -1,0 +1,29 @@
+---
+import { getCollection } from "astro:content";
+import GalleryRail from "@/components/gallery/GalleryRail.astro";
+import PageLayout from "@/layouts/Base.astro";
+import { collectionDateSort } from "@/utils/date";
+
+const galleryEntries = (await getCollection("gallery", ({ data }) => !data.draft)).sort(collectionDateSort);
+
+const meta = {
+	title: "Gallery",
+	description:
+		"Photography collections arranged as horizontal image rails with lightbox viewing and collection-level context.",
+};
+---
+
+<PageLayout meta={meta}>
+	<section class="index-content grid gap-4">
+		<div>
+			<h1 class="title mb-4">Gallery</h1>
+			<p>
+				A dedicated surface for photography collections. Each row keeps a set together, supports direct horizontal browsing, and opens into a full lightbox view when you want to inspect a frame more closely.
+			</p>
+		</div>
+
+		<div class="grid gap-4">
+			{galleryEntries.map((entry, index) => <GalleryRail entry={entry} index={index} />)}
+		</div>
+	</section>
+</PageLayout>

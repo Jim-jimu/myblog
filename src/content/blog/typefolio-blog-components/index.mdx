@@ -1,0 +1,153 @@
+---
+title: "Typefolio Blog Components"
+description: "A guided tour of the reusable blog components and rich-content patterns built into Typefolio."
+publishDate: "04 Feb 2026"
+updatedDate: "27 Feb 2026"
+tags: ["blog", "components", "markdown"]
+pinned: true
+tldr:
+  - "Typefolio combines Markdown directives, MDX, and layout-level helpers to keep feature posts expressive without adding runtime-heavy UI."
+  - "This article demonstrates admonitions, GitHub cards, Astro Icon, TLDR, and backlinks in one release-ready post."
+  - "The backlinks panel at the end is generated automatically because other public posts in the archive link back to this guide."
+---
+
+import { Icon } from "astro-icon/components";
+
+This post demonstrates the various blog components and rich-content patterns built into Typefolio. If you want the lower-level Markdown reference, continue with the [Typefolio Markdown Reference](/blog/markdown-elements/).
+
+## Admonitions
+
+Admonitions (also known as “asides”) are useful for providing supportive and/or supplementary information related to your content.
+
+### How to use them
+
+To use admonitions in Typefolio, wrap your Markdown content in a pair of triple colons `:::`. The first pair should also include the type of admonition you want to use.
+
+For example, with the following Markdown:
+
+```md
+:::note
+Highlights information that users should take into account, even when skimming.
+:::
+```
+
+Outputs:
+
+:::note
+Highlights information that users should take into account, even when skimming.
+:::
+
+The following admonitions are currently supported:
+
+- `note`
+- `tip`
+- `important`
+- `warning`
+- `caution`
+
+:::note[note]
+Highlights information that users should take into account, even when skimming.
+:::
+
+:::tip[tip]
+Optional information to help a user be more successful.
+:::
+
+:::important[important]
+Crucial information necessary for users to succeed.
+:::
+
+:::caution
+Negative potential consequences of an action.
+:::
+
+:::warning
+Critical content demanding immediate user attention due to potential risks.
+:::
+
+### Customising the admonition title
+
+You can customise the admonition title using the following markup:
+
+```md
+:::note[My custom title]
+This is a note with a custom title.
+:::
+```
+
+Outputs:
+
+:::note[My custom title]
+This is a note with a custom title.
+:::
+
+## GitHub cards for repository context
+
+You can add dynamic cards that link to GitHub repositories, on page load, the repository information is pulled from the GitHub API.
+
+```markdown title="Linking a repo"
+::github{repo="whliao5am/astro-theme-typefolio"}
+```
+
+::github{repo="whliao5am/astro-theme-typefolio"}
+
+You can also link a Github user:
+
+```markdown title="Linking a user"
+::github{user="whliao5am"}
+```
+
+::github{user="whliao5am"}
+
+## Astro Icon for inline visual markers
+
+When a post benefits from compact visual signposts, MDX can import `astro-icon` directly and keep the iconography consistent with the rest of the site.
+
+<div class="grid gap-3 sm:grid-cols-3">
+	<div class="rounded-lg border border-zinc-200 p-4 dark:border-zinc-700">
+		<p>
+			<Icon name="mdi:draw-pen" class="text-accent h-5 w-5" />
+			Writing surface
+		</p>
+		<p>
+			Use icons to emphasize page roles and feature labels without adding a full
+			UI framework.
+		</p>
+	</div>
+	<div class="rounded-lg border border-zinc-200 p-4 dark:border-zinc-700">
+		<p>
+			<Icon name="mdi:tag-outline" class="text-accent h-5 w-5" />
+			Archive cues
+		</p>
+		<p>
+			The same icon set can reinforce tags, metadata, and supporting navigation
+			across archive pages.
+		</p>
+	</div>
+	<div class="rounded-lg border border-zinc-200 p-4 dark:border-zinc-700">
+		<p>
+			<Icon name="mdi:source-repository" class="text-accent h-5 w-5" />
+			Project references
+		</p>
+		<p>
+			Inline icons are especially useful when a post points to repositories,
+			release notes, or implementation guides.
+		</p>
+	</div>
+</div>
+
+## TLDR comes from frontmatter
+
+The summary block at the top of this page is rendered by the shared blog layout, not by custom markup in the article body. That keeps short-form summaries consistent across every post that needs one.
+
+```yaml
+tldr:
+  - "Summarize the article in two or three points."
+  - "Keep each point concrete and readable out of context."
+```
+
+## Backlinks close the loop
+
+Typefolio records internal post-to-post references during Markdown processing. When another article links here, the layout automatically exposes that relationship in the backlinks section at the bottom of the page.
+
+That makes component guides more discoverable over time: feature walkthroughs can reference one another, and readers can move through the archive by following real editorial connections instead of isolated demo pages.

@@ -1,0 +1,31 @@
+---
+title: "Travel Impressions"
+description: "A six-frame sequence moving from open water and tropical leisure to soaring views, historic architecture, and a quiet study of texture."
+publishDate: 2026-04-04
+tags: ["travel", "architecture", "nature"]
+images:
+  - src: "1.jpg"
+    title: "Musandam Dolphin"
+    caption: "Photo by Geni Hoka — a dolphin moves gracefully through the waters of al-Chasab, Musandam, Oman."
+    descPosition: "right"
+  - src: "2.jpg"
+    title: "Punta Cana Bar"
+    caption: "Photo by Kevin Kleber — a tropical beachside bar scene in Punta Cana, La Altagracia Province, Dominican Republic."
+    descPosition: "bottom"
+  - src: "3.jpg"
+    title: "Ölüdeniz Paragliding"
+    caption: "Photo by Adem Percem — a paragliding adventure unfolds above the dramatic coastline of Fethiye, Turkey."
+    descPosition: "right"
+  - src: "4.jpg"
+    title: "Modica Cathedral Tower"
+    caption: "Photo by Roberto Copernico — the grand cathedral tower rises above Modica, Sicilia, Italia."
+    descPosition: "bottom"
+  - src: "5.jpg"
+    title: "Sunlit Paris Facades"
+    caption: "Photo by maarten van asten — Parisian architecture catches the light across sunlit facades in Parijs, Île-de-France, Frankrijk."
+    descPosition: "right"
+  - src: "6.jpg"
+    title: "Leaf on Stone"
+    caption: "Photo by Alari Tammsalu — a single green leaf rests on black stone pavement in a minimalist study of form and contrast."
+    descPosition: "bottom"
+---

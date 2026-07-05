@@ -1,0 +1,132 @@
+---
+import { type CollectionEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
+import PostPreview from "@/components/blog/PostPreview.astro";
+import type { WhatsNewItem } from "@/components/home/WhatsNewTimeline.astro";
+import WhatsNewTimeline from "@/components/home/WhatsNewTimeline.astro";
+import InlineIconLink from "@/components/InlineIconLink.astro";
+import { getAllPosts } from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
+import { collectionDateSort } from "@/utils/date";
+import { withBase } from "@/utils/url";
+
+// Posts
+const allPosts = await getAllPosts();
+const allPostsByDate = allPosts.sort(
+	collectionDateSort,
+) as CollectionEntry<"blog">[];
+
+// Pinned Posts, set to a max of 3;
+const MAX_PINNED_POSTS = 5;
+const pinnedPosts = allPostsByDate
+	.filter((p) => p.data.pinned)
+	.slice(0, MAX_PINNED_POSTS);
+
+const whatsNewItems: WhatsNewItem[] = [
+	{
+		date: "Jul 2026",
+		kind: "milestone",
+		label: "Site",
+		description:
+			"Initialized Astro Typefolio as a publishing home for technical writing, course notes, and Typst handouts.",
+	},
+	{
+		date: "Next",
+		kind: "paper",
+		label: "Notes",
+		description:
+			"Organize course note indexes and migrate useful technical notes, derivations, and code snippets.",
+	},
+	{
+		date: "Next",
+		kind: "service",
+		label: "Typst",
+		description:
+			"Typeset important handouts, assignments, and reports with Typst + scarif, then publish the PDFs inside note pages.",
+	},
+];
+---
+
+<PageLayout meta={{ title: "Home" }}>
+	<section class="index-content">
+		<div class="flex items-center gap-4">
+			<img
+				alt="Jimjimu avatar"
+				class="h-20 w-20 rounded-full object-cover"
+				decoding="async"
+				height={320}
+				loading="eager"
+				src={withBase("/assets/avatar.png")}
+				width={320}
+			/>
+			<div>
+				<h1 class="text-accent-2 text-xl font-semibold wrap-break-word">Jimjimu Notes</h1>
+				<div>Technical writing, course notes, and project records.</div>
+				<div>Markdown / MDX / Typst publishing.</div>
+			</div>
+		</div>
+		<hr class="index-divider mt-4" />
+		<div class="mt-4">
+			<p>
+				This site collects technical learning, course notes, coding experiments,
+				and downloadable Typst handouts. Regular notes are written in Markdown
+				or MDX; formal handouts and reports are typeset with Typst, exported as
+				PDFs, and embedded in the related pages.
+			</p>
+			<p>
+				Find me on
+				<InlineIconLink
+					href="https://github.com/jimjimu"
+					icon="mdi:github"
+					label="GitHub"
+					width="2em"
+					height="2em"
+					target="_blank"
+				/>
+			</p>
+		</div>
+	</section>
+
+	{
+		pinnedPosts.length > 0 && (
+			<section class="mt-8">
+				<h2 class="title mb-4 flex items-center gap-2 text-xl">
+					Pinned Notes
+					<Icon
+						aria-hidden="true"
+						class="text-accent h-5 w-5 rotate-45"
+						focusable="false"
+						name="mdi:pin-outline"
+					/>
+				</h2>
+				<ul class="space-y-1" role="list">
+					{pinnedPosts.map((p) => (
+						<li class="grid sm:grid-cols-[auto_1fr]">
+							<PostPreview post={p} />
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+
+	<WhatsNewTimeline items={whatsNewItems} />
+
+	<section class="mt-8">
+		<h2 class="title mb-4 text-xl">Content Plan</h2>
+		<div class="space-y-2">
+			<p>
+				[1] <span class="font-semibold">Technical notes</span>: programming languages,
+				toolchains, engineering practice, and debugging records.
+			</p>
+			<p>
+				[2] <span class="font-semibold">Course notes</span>: chapter-based notes for
+				math, computer science, and engineering courses.
+			</p>
+			<p>
+				[3] <span class="font-semibold">Typst documents</span>: PDF previews and source
+				archives for handouts, assignments, and reports.
+			</p>
+		</div>
+	</section>
+</PageLayout>
