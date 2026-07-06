@@ -25,7 +25,7 @@ giscus: false
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260424212206.webp" alt="Pasted image 20260424212206" width="434" loading="lazy" />
 
-**Sign and Magnitude (原码)** 
+**Sign and Magnitude (原码)**
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260424212247.webp" alt="Pasted image 20260424212247" width="421" loading="lazy" />
 

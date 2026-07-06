@@ -21,7 +21,7 @@ Caches always contain a copy of the lower levels
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260510152541.webp" alt="Pasted image 20260510152541" width="471" loading="lazy" />
  （缓存如何设计）
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260510152609.webp" alt="Pasted image 20260510152609" width="460" loading="lazy" />
- 
+
 ### **Direct-Mapped Cache**
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260510155752.webp" alt="Pasted image 20260510155752" width="459" loading="lazy" />
@@ -44,19 +44,21 @@ Caches always contain a copy of the lower levels
 
 一行是一个cache block，并且他们共享tag值
 
-> **Example: 例1 （作业5T1）**
-> 某 RISCV 处理器使用 32 位地址，L1 数据缓存配置为：容量 = 32 KiB，块大小 = 128 字节，直接映射
-> （1）计算缓存行数、索引位数、块内偏移位数、标记位数。
-> （2）将地址 0x2004A 分解为标记、索引和偏移。
-> （3）若缓存初始为空，访问地址 0x20000、0x20080、0x20100、0x20080 分别命中/缺失？
-> 
-> > **Tip: 解答**
-> > （1）直接计算TIO，offset有 $128B=2^7 B$ 需要7位，计算行数：$32KiB / 128B = 256 Rows$ 需要8个二进制位，Tag位数 $32-7-8=17$ 位，因此 Rows=256，index位数8，offset位数7，Tag位数17
-> > （2）转化为2进制：$0x2004A=0b 0010 0000 0000 0100 1010$所以$offset=0b1001010,index=0,tag=0b100$
-> > （3）先看0x20000，offset=0, index=0, tag=0x4 ,冷启动，cache miss ;
-> > 接下去0x20080, offset=0, index=0x1, tag=0x4,  冷启动，cache miss;
-> > 接下去0x20100, offset=0, index=0x2, tag=0x4,  冷启动，cache miss;
-> > 接下去0x20180, offset=0, index=0x1, tag=0x4,  tag匹配，cache hit;
+:::note[Example: 例1 （作业5T1）]
+某 RISCV 处理器使用 32 位地址，L1 数据缓存配置为：容量 = 32 KiB，块大小 = 128 字节，直接映射
+（1）计算缓存行数、索引位数、块内偏移位数、标记位数。
+（2）将地址 0x2004A 分解为标记、索引和偏移。
+（3）若缓存初始为空，访问地址 0x20000、0x20080、0x20100、0x20080 分别命中/缺失？
+
+:::tip[解答]
+（1）直接计算TIO，offset有 $128B=2^7 B$ 需要7位，计算行数：$32KiB / 128B = 256 Rows$ 需要8个二进制位，Tag位数 $32-7-8=17$ 位，因此 Rows=256，index位数8，offset位数7，Tag位数17
+（2）转化为2进制：$0x2004A=0b 0010 0000 0000 0100 1010$所以$offset=0b1001010,index=0,tag=0b100$
+（3）先看0x20000，offset=0, index=0, tag=0x4 ,冷启动，cache miss ;
+接下去0x20080, offset=0, index=0x1, tag=0x4,  冷启动，cache miss;
+接下去0x20100, offset=0, index=0x2, tag=0x4,  冷启动，cache miss;
+接下去0x20180, offset=0, index=0x1, tag=0x4,  tag匹配，cache hit;
+:::
+:::
 
 ## Direct-Mapped Cache Example
 Directed Cache
@@ -92,14 +94,15 @@ read Cache的顺序：IVTO：index , Valid, Tag , Offset
 
 Write-through和write-back现在都有在不同的地方应用
 
-> **Example: 例1 （作业5 T3）**
-> 考虑一个 RISCV 处理器，总线传输一个缓存块需要 50 周期。L1 命中时间 2 周期。程序统计：
-> - 读操作占 50%，写操作占 50%
-> - 读缺失率 = 4%，写缺失率 = 2%
-> - 写命中时，写直达需额外 50 周期写回总线；写回仅标记脏位，替换时 30% 的块是脏的
-> **问题：**  
-> (1) 分别计算写直达与写回策略下的平均内存访问时间（AMAT）。  
-> (2) 写回比写直达节省多少百分比的平均访问时间
+:::note[Example: 例1 （作业5 T3）]
+考虑一个 RISCV 处理器，总线传输一个缓存块需要 50 周期。L1 命中时间 2 周期。程序统计：
+- 读操作占 50%，写操作占 50%
+- 读缺失率 = 4%，写缺失率 = 2%
+- 写命中时，写直达需额外 50 周期写回总线；写回仅标记脏位，替换时 30% 的块是脏的
+**问题：**
+(1) 分别计算写直达与写回策略下的平均内存访问时间（AMAT）。
+(2) 写回比写直达节省多少百分比的平均访问时间
+:::
 
 （1）
 写直达：AMAT=0.5 x (2 + 50 x 0.04) + 0.5 x (2 + 50 x 0.02 + 50) = 0.5 x 4 + 0.5 x 53 = 28.5
@@ -139,7 +142,7 @@ Write-through和write-back现在都有在不同的地方应用
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260516220237.webp" alt="Pasted image 20260516220237" width="505" loading="lazy" />
 
 一开始考虑一个全相联、无限大的缓存，遇到的miss就是compulsory
-接下去将这个cache变成全相联、有限大的缓存，遇到的miss除去之前的compulsory miss，就是capacity miss 
+接下去将这个cache变成全相联、有限大的缓存，遇到的miss除去之前的compulsory miss，就是capacity miss
 最后将这个cache变成有限相联、有限大的缓存，遇到的miss除去之前的就是conflict miss
 
 ## Set-Associative Caches
@@ -154,24 +157,28 @@ Write-through和write-back现在都有在不同的地方应用
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260517000548.webp" alt="Pasted image 20260517000548" width="488" loading="lazy" />
 
-> **Tip: 缓存行**
-> 虽然上图把一个set画在同一行里，但是一般缓存行等价于缓存块
+:::tip[缓存行]
+虽然上图把一个set画在同一行里，但是一般缓存行等价于缓存块
+:::
 
-> **Example: 例1（作业5T2）**
-> 某 RISC-V 处理器 L1 数据缓存：容量 = 64 KiB， 块大小 = 64 字节，2 路组相联
-**问题：**  
-(1) 求组数、每组块数、标记位数。  
-(2) 若每个缓存行需要 1 位有效位、1 位脏位，求标记存储总位数（只计标记、有效、脏）。  
+:::note[Example: 例1（作业5T2）]
+某 RISC-V 处理器 L1 数据缓存：容量 = 64 KiB， 块大小 = 64 字节，2 路组相联
+**问题：**
+(1) 求组数、每组块数、标记位数。
+(2) 若每个缓存行需要 1 位有效位、1 位脏位，求标记存储总位数（只计标记、有效、脏）。
 (3) 若改为 4 路组相联（容量不变），标记总位数如何变化？
-> > **Tip: 解答**
-> > （1）因为是2路组相连，每组块数就是2；那么一组2个clock，大小为 $2 \times 64B=128B$，组数为 $64KiB / 128B = 512$ 组。计算tag：$32 - \log_2 {512} - log_2 {64} = 32-9-6=17$ 
-> > （2）行数 x 每行总位数 ： $1024 \times (17 + 1 + 1) / 8 = 2432B$
-> > （3）每组块数改为4，每组的大小为 $4 \times 64B=256B$，组数为 $64KiB / 256B = 256$ 组，因此index需要的位数就是 $\log_2{256} = 8$，计算tag：$32-8-log_2{64}=18$，由于行数（块数）不变，总位数 $1024 \times (18 + 1 + 1)=20480$ 位，增加了1024位
+:::tip[解答]
+（1）因为是2路组相连，每组块数就是2；那么一组2个clock，大小为 $2 \times 64B=128B$，组数为 $64KiB / 128B = 512$ 组。计算tag：$32 - \log_2 {512} - log_2 {64} = 32-9-6=17$
+（2）行数 x 每行总位数 ： $1024 \times (17 + 1 + 1) / 8 = 2432B$
+（3）每组块数改为4，每组的大小为 $4 \times 64B=256B$，组数为 $64KiB / 256B = 256$ 组，因此index需要的位数就是 $\log_2{256} = 8$，计算tag：$32-8-log_2{64}=18$，由于行数（块数）不变，总位数 $1024 \times (18 + 1 + 1)=20480$ 位，增加了1024位
+:::
+:::
 
-> **Note: 解题方法**
-> - 针对这种组相联的问题，首先offset位数是 block size（以B为单位）的 log2，因为计算机memory address是以字节为单位的，例如block size=64B，那么里面的编号肯定是0x0,0x1...0x3f，每个编号里面存一个字节的数据，因此offset需要定位，就需要表示0-63，因此取对数计算
-> - 其次，计算index位数，也就是组数的 $\log_2$，因为同一组里是全相联查询，所以index的作用是定位到给出的memory address是在哪一个组。组数的计算方法就是直接$\frac{Cache size}{block size \times blocks per set}$
-> - 最后tag的位数$=32-offset-index$
+:::note[解题方法]
+- 针对这种组相联的问题，首先offset位数是 block size（以B为单位）的 log2，因为计算机memory address是以字节为单位的，例如block size=64B，那么里面的编号肯定是0x0,0x1...0x3f，每个编号里面存一个字节的数据，因此offset需要定位，就需要表示0-63，因此取对数计算
+- 其次，计算index位数，也就是组数的 $\log_2$，因为同一组里是全相联查询，所以index的作用是定位到给出的memory address是在哪一个组。组数的计算方法就是直接$\frac{Cache size}{block size \times blocks per set}$
+- 最后tag的位数$=32-offset-index$
+:::
 
 ## Block Replacement Policy & LRU
 
@@ -190,7 +197,7 @@ Write-through和write-back现在都有在不同的地方应用
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260516233158.webp" alt="Pasted image 20260516233158" width="502" loading="lazy" />
 
-为啥不把Hit Time拆分成Hit rate x hit time ? 
+为啥不把Hit Time拆分成Hit rate x hit time ?
 因为无论是否hit都需要支付hit time
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260517001016.webp" alt="Pasted image 20260517001016" width="496" loading="lazy" />
@@ -207,22 +214,24 @@ Write-through和write-back现在都有在不同的地方应用
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260517001134.webp" alt="Pasted image 20260517001134" width="462" loading="lazy" />
 
-> **Example: 例1 （作业5 T5）**
-> RISC‑V 处理器有 L1 和 L2 缓存：L1：命中时间 2 周期，缺失率 8%；L2：命中时间 12 周期，局部命中率 50%（即 L1 缺失中有一半在 L2 命中，另一半需访问主存）；主存访问时间 200 周期
-> **问题：**
-> (1) 计算全局 AMAT。
-> (2) 若将 L2 局部命中率提升至 85%，AMAT 降低多少？
-> > **Tip: 解答**
-> > （1）直接套用上图公式
-> > $$
-> > \begin{aligned}
-> > AMAT &= L1 Hit + L1missrate \times L1misspenalty \\
-> > &= L1 Hit + L1missrate \times (L2Hit + L2missrate \times L2misspenalty) \\
-> > &= 2 + 0.08 \times (12 + 0.5 \times 200) \\
-> > &= 10.96 \quad cycles 
-> > \end{aligned}
-> > $$
-> > （2）把上面公式的0.5改成0.15
+:::note[Example: 例1 （作业5 T5）]
+RISC‑V 处理器有 L1 和 L2 缓存：L1：命中时间 2 周期，缺失率 8%；L2：命中时间 12 周期，局部命中率 50%（即 L1 缺失中有一半在 L2 命中，另一半需访问主存）；主存访问时间 200 周期
+**问题：**
+(1) 计算全局 AMAT。
+(2) 若将 L2 局部命中率提升至 85%，AMAT 降低多少？
+:::tip[解答]
+（1）直接套用上图公式
+$$
+\begin{aligned}
+AMAT &= L1 Hit + L1missrate \times L1misspenalty \\
+&= L1 Hit + L1missrate \times (L2Hit + L2missrate \times L2misspenalty) \\
+&= 2 + 0.08 \times (12 + 0.5 \times 200) \\
+&= 10.96 \quad cycles
+\end{aligned}
+$$
+（2）把上面公式的0.5改成0.15
+:::
+:::
 
 # OS & Virtual Memory
 

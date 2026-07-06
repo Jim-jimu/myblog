@@ -31,9 +31,10 @@ giscus: false
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260429143036.webp" alt="Pasted image 20260429143036" width="453" loading="lazy" />
 
-> **Note: 为什么不能使用R型来算addi？**
-> 在 R 型指令的 32 位结构中，留给寄存器编号（如 `rs2`）的空间只有 5 个比特 (bit)，太小了可能装不下立即数。
-> 解决方法：包含立即数的指令（如 `addi`）**最多只需要 2 个寄存器**。既然不需要 `rs2`，架构师就可以把原来属于 `rs2` 的 5 位空间，连同旁边 `funct7` 的 7 位空间一起腾出来，合并成一个**连续的 12 位空间**。这样就可以存放更大的常数（可以表示 -2048 到 +2047 的范围）了！
+:::note[为什么不能使用R型来算addi？]
+在 R 型指令的 32 位结构中，留给寄存器编号（如 `rs2`）的空间只有 5 个比特 (bit)，太小了可能装不下立即数。
+解决方法：包含立即数的指令（如 `addi`）**最多只需要 2 个寄存器**。既然不需要 `rs2`，架构师就可以把原来属于 `rs2` 的 5 位空间，连同旁边 `funct7` 的 7 位空间一起腾出来，合并成一个**连续的 12 位空间**。这样就可以存放更大的常数（可以表示 -2048 到 +2047 的范围）了！
+:::
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260429143249.webp" alt="Pasted image 20260429143249" width="459" loading="lazy" />
 
@@ -53,10 +54,11 @@ giscus: false
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260429144244.webp" alt="Pasted image 20260429144244" width="449" loading="lazy" />
 
-> **Note: Store 指令不需要写回寄存器**
-> - 与I型不同的是，sw有rs2
-> - **没有 `rd`：** 绝大多数指令计算完都要把结果写回目标寄存器（`rd`），但 Store 指令是把数据**写进内存**。因此，对于 S 型指令来说，目标寄存器字段 **`rd` 是完全多余的**！
-> - 这就意味着，原本属于 `rd` 的 5 个比特位（第 7 到 11 位）空出来了，用来放立即数
+:::note[Store 指令不需要写回寄存器]
+- 与I型不同的是，sw有rs2
+- **没有 `rd`：** 绝大多数指令计算完都要把结果写回目标寄存器（`rd`），但 Store 指令是把数据**写进内存**。因此，对于 S 型指令来说，目标寄存器字段 **`rd` 是完全多余的**！
+- 这就意味着，原本属于 `rd` 的 5 个比特位（第 7 到 11 位）空出来了，用来放立即数
+:::
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260429144702.webp" alt="Pasted image 20260429144702" width="472" loading="lazy" />
 
@@ -104,18 +106,19 @@ giscus: false
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260430091924.webp" alt="Pasted image 20260430091924" width="497" loading="lazy" />
 
-> **Note: 如何在一个寄存器中生成一个完整的 32 位大常数（长立即数）？****
->  第一步：使用 `lui` 搞定高 20 位
->
-> - **指令含义：** `lui` 全称是 **Load Upper Immediate**（加载高位立即数）。它属于一种新的指令格式：**U 型指令 (U-Format)**。这种格式把除了 `opcode` 和目标寄存器 `rd` 之外的所有空间，都留给了一个巨大的 **20 位立即数**。 
-> - **它的动作：** 当你执行 `lui` 时，CPU 会把这 20 位的数字，直接填进目标寄存器的**高 20 位**（即第 12 到 31 位），同时把剩下的**低 12 位全部清零 (clears the lower 12 bits)**。
-> 
-> 
->  2. 第二步：使用 `addi` 搞定低 12 位
-> 
-> - 高 20 位已经就位，低 12 位现在全是 0。我们只需要把剩下的 12 位数字“加”进去就可以了。
->     
-> - 这时，我们熟悉的 `addi` (I 型指令，正好支持 12 位立即数) 闪亮登场。 
+:::note[如何在一个寄存器中生成一个完整的 32 位大常数（长立即数）？]
+ 第一步：使用 `lui` 搞定高 20 位
+
+- **指令含义：** `lui` 全称是 **Load Upper Immediate**（加载高位立即数）。它属于一种新的指令格式：**U 型指令 (U-Format)**。这种格式把除了 `opcode` 和目标寄存器 `rd` 之外的所有空间，都留给了一个巨大的 **20 位立即数**。
+- **它的动作：** 当你执行 `lui` 时，CPU 会把这 20 位的数字，直接填进目标寄存器的**高 20 位**（即第 12 到 31 位），同时把剩下的**低 12 位全部清零 (clears the lower 12 bits)**。
+
+
+ 2. 第二步：使用 `addi` 搞定低 12 位
+
+- 高 20 位已经就位，低 12 位现在全是 0。我们只需要把剩下的 12 位数字“加”进去就可以了。
+
+- 这时，我们熟悉的 `addi` (I 型指令，正好支持 12 位立即数) 闪亮登场。
+:::
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260430092329.webp" alt="Pasted image 20260430092329" width="531" loading="lazy" />
 
@@ -178,14 +181,15 @@ J 型指令为了跳得更远，把能挪用的空间全挪用了，腾出了足
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260430104339.webp" alt="Pasted image 20260430104339" width="479" loading="lazy" />
 
-> **Note: **D 触发器的核心工作逻辑****
-> 一个标准的 D 触发器有三个最关键的引脚：
-> - **D (Data，数据输入)：** 等待被记住的新数据（比如加法器刚算出来的结果）。
-> - **Q (Output，数据输出)：** 当前已经被记住的老数据。
-> - **CLK (Clock，时钟信号)：** 控制节奏的“快门”开关，是一个不断在 0 和 1 之间跳动的方波信号。
+:::note[D 触发器的核心工作逻辑]
+一个标准的 D 触发器有三个最关键的引脚：
+- **D (Data，数据输入)：** 等待被记住的新数据（比如加法器刚算出来的结果）。
+- **Q (Output，数据输出)：** 当前已经被记住的老数据。
+- **CLK (Clock，时钟信号)：** 控制节奏的“快门”开关，是一个不断在 0 和 1 之间跳动的方波信号。
 它的运行规则可以用两句话概括：
 **1. 上升沿瞬间：按下快门（采样并存储）** 当时钟信号 CLK 从 `0` 瞬间跳变到 `1` 的那一刻（这就是**上升沿**），D 触发器的“快门”咔嚓一下打开。它会立刻抓取此时 D 端口上的数据，并把它送到 Q 端口输出。此时，新数据被成功“存储”了下来。
 **2. 其他所有时间：保持不变（无视外界干扰）** 在时钟信号保持为 `1`、下降沿（`1` 变 `0`）、以及保持为 `0` 的**所有期间**，D 触发器的大门是死死关闭的。无论输入端 D 的数据怎么剧烈波动、跳变，输出端 Q 都会**死死保持**着刚才上升沿时抓取到的那个值。
+:::
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260430104718.webp" alt="Pasted image 20260430104718" width="467" loading="lazy" />
 

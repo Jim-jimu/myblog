@@ -50,19 +50,19 @@ IEEE754指数为什么使用Bias Notation
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260425003303.webp" alt="Pasted image 20260425003303" width="364" loading="lazy" />
 
-由上面的$2^{-126} >> 2^{-149}$ 我们发现0到最小数之间有一个很大的gap，而罪魁祸首是我们省略了尾数的先导“1”，因此，在exponent=0且$significand \not = 0$的时候我们取消这个先导1，尾数变为$(0.significand)_2$   
+由上面的$2^{-126} >> 2^{-149}$ 我们发现0到最小数之间有一个很大的gap，而罪魁祸首是我们省略了尾数的先导“1”，因此，在exponent=0且$significand \not = 0$的时候我们取消这个先导1，尾数变为$(0.significand)_2$
 
 IEEE 754 强行规定：所有非规格化数的真实指数固定为 1−Bias（此处bias为正数）。对于单精度来说，就是 1−127=−126
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260425003317.webp" alt="Pasted image 20260425003317" width="368" loading="lazy" />
 
 此时非规格化的最小正数为$2^{-23} \times 2^{-126} = 2^{-149}$,次小数为$2 \times 2^{-149}$,接下去是$3\times 2^{-149}$ ,以此类推
-到尾数全为1的时候，接下去再往下数指数位+1，就是$(1+1 \times 2^{-23}) \times 2^{-126},(1+2 \times 2^{-23}) \times 2^{-126}...$ 
-到尾数全为1的时候，接下去再往下数指数位+1(此时exponent变为0b10 : 
+到尾数全为1的时候，接下去再往下数指数位+1，就是$(1+1 \times 2^{-23}) \times 2^{-126},(1+2 \times 2^{-23}) \times 2^{-126}...$
+到尾数全为1的时候，接下去再往下数指数位+1(此时exponent变为0b10 :
 $$
 (1+1 \times 2^{-23}) \times 2^{-125},(1+2 \times 2^{-23}) \times 2^{-125}...
 $$
-我们发现stride从 $2^{-149}$ 变成了 $2^{-148}$ 
+我们发现stride从 $2^{-149}$ 变成了 $2^{-148}$
 也就是说，每次exponent加1，stride就会翻倍。
 
 浮点数在数轴上的分布特征：**越靠近 0，浮点数分布得越密集（stride 越小）；数字的绝对值越大，浮点数分布得越稀疏（stride 越大）。** 这种步长在计算机科学中被称为 **ULP (Unit in the Last Place)**

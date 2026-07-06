@@ -34,28 +34,29 @@ polling一个disk会占用非常多的cpu时钟周期，所以我们对于从dis
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260530165255.webp" alt="Pasted image 20260530165255" width="507" loading="lazy" />
 
-> **Note: 低速率IO VS 高速率IO**
+:::note[低速率IO VS 高速率IO]
 >刚才我们在代码中看到，轮询会让 CPU 陷入死循环（`Waitloop`），一直干等外设。这对于极其宝贵的 CPU 资源来说是巨大的浪费。因此，这页 PPT 根据**外设的数据传输速率（Data Rate）**，给出了三种不同的 I/O 处理策略：轮询（Polling）、中断（Interrupts）和直接内存访问（DMA）。
  >1. 针对低速设备 (Low data rate)
->
+
 >- **代表设备：** 鼠标、键盘。
 >- **PPT 策略：Use interrupts（使用中断）。**
 >- **原理解释：** 人类敲击键盘或移动鼠标的速度，在动辄以 GHz 计时的 CPU 看来是极其缓慢的。如>果我们用轮询去检查键盘，CPU 可能会空转几亿次才等来一次按键。
 >因此，更好的做法是**中断（Interrupt）**：CPU 平时该干嘛干嘛（比如渲染游戏画面、播放音乐）。当键盘被按下时，键盘硬件会向 CPU 发送一个电信号（中断信号），就像“拍了一下 CPU 的肩膀”。CPU 收到信号后，暂停手头的工作，花极短的时间把按键数据读进来，然后立刻恢复原先的工作。
 >- **PPT 小字解读 ("Overhead of interrupts ends up being low")：**
     >虽然 CPU 每次处理中断都需要保存和恢复现场（这叫 Overhead，开销），但因为低速设备触>发中断的频率非常低，所以把时间拉长来看，这种开销几乎可以忽略不计。
->
+
  >2. 针对高速设备 (High data rate)
 >- **代表设备：** 千兆网卡、固态硬盘。
 >- **PPT 策略：Start with interrups... Switch to DMA（先用中断，数据来了切换到 DMA）。**
 >- **原理解释：**
   >  高速设备的数据量极大。假设你在下载一部几十 GB 的电影，如果网卡每收到一个字节的数据都去“拍一次 CPU 的肩膀”（触发中断），CPU 就会被密集的“枪林弹雨”般的中断信号彻底淹没（这被称为**中断风暴**），导致系统卡死，什么活也干不了。
->
+
 >因此，现代计算机采取了**两步走**的策略：
 >1. **第一步（Start with interrupts）：** 当网卡没有数据时，CPU 不去管它（"If there is no data, >you don't do anything!"）。直到网卡收到第一批数据包，它发**一个中断**告诉 CPU：“老大，有大批数据要进来了！”
 >2. **第二步（Switch to DMA）：** CPU 收到通知后，为了避免被后续源源不断的数据打断，它会唤醒主板上的一个小助手——**DMA 控制器（Direct Memory Access）**。
 >CPU 会给 DMA 下达指令：“小弟，网卡那边有 1GB 的数据，你负责把它们直接搬运到内存地址 `0xXXXX`去，搬完再叫我。”
 >交代完后，CPU 就可以转头去干别的重活了。**DMA 硬件会接管总线，直接在“网卡”和“内存”之间倒腾数据，全程不需要 CPU 参与。**
+:::
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260530170044.webp" alt="Pasted image 20260530170044" width="491" loading="lazy" />
 
@@ -112,22 +113,24 @@ XMM register是一个大宽度寄存器
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260530211132.webp" alt="Pasted image 20260530211132" width="502" loading="lazy" />
 
-> **Note: SSE**
-> **SSE** 的全称是 **Streaming SIMD Extensions**（流式单指令多数据扩展）。
-> SSE 其实就是 Intel 在 1999 年伴随 Pentium III 处理器推出的一套具体的 SIMD 指令集标准和硬件实现。
-> - SSE 引入了全新的数据类型和指令，允许 CPU 将 **4 个单精度浮点数（32-bit float）** 打包塞进一个 128-bit 的 XMM 寄存器中，并用一条指令（如 `ADDPS`，Add Packed Single-precision）同时完成 4 个浮点数的加减乘除。
-> 
+:::note[SSE]
+**SSE** 的全称是 **Streaming SIMD Extensions**（流式单指令多数据扩展）。
+SSE 其实就是 Intel 在 1999 年伴随 Pentium III 处理器推出的一套具体的 SIMD 指令集标准和硬件实现。
+- SSE 引入了全新的数据类型和指令，允许 CPU 将 **4 个单精度浮点数（32-bit float）** 打包塞进一个 128-bit 的 XMM 寄存器中，并用一条指令（如 `ADDPS`，Add Packed Single-precision）同时完成 4 个浮点数的加减乘除。
+
+:::
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260530211420.webp" alt="Pasted image 20260530211420" width="527" loading="lazy" />
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260530211434.webp" alt="Pasted image 20260530211434" width="524" loading="lazy" />
 
-> **Note: Intrinsics （内联函数 / 内置函数）**
-> 问题：既然我们知道了 CPU 里有 SSE 这些极其强大的 SIMD 硬件指令，作为程序员，我们该如何在代码里调用它们？
+:::note[Intrinsics （内联函数 / 内置函数）]
+问题：既然我们知道了 CPU 里有 SSE 这些极其强大的 SIMD 硬件指令，作为程序员，我们该如何在代码里调用它们？
 >- **通俗解释:** 过去，如果你想压榨 CPU 的极限性能，用到 SSE 指令，你必须在 C 代码里手写晦涩的**内联汇编 (Inline Assembly)**。手写汇编不仅容易出错，还会破坏 C 编译器的优化过程（因为编译器看不懂你手写的汇编，无法帮你有效分配寄存器）。
 >- **Intrinsics 的诞生:** Intel 和编译器厂商（如 GCC, Clang, MSVC）约定好了一套“暗号”。**Intrinsics 表面上看起来就像普通的 C/C++ 函数调用，但编译器在编译时，会把它们 100% 完美地翻译成对应的、特定的底层汇编指令。**
-> - **优势 (One-to-one correspondence):** 也就是 PPT 里强调的“一一对应”。你调用一个 intrinsic 函数，底层的机器码就必然生成那条特定的 SSE 指令。它让你既能享受写 C 语言的便利（编译器帮你管寄存器），又能拥有写汇编级别的绝对硬件控制力。
-> 
+- **优势 (One-to-one correspondence):** 也就是 PPT 里强调的“一一对应”。你调用一个 intrinsic 函数，底层的机器码就必然生成那条特定的 SSE 指令。它让你既能享受写 C 语言的便利（编译器帮你管寄存器），又能拥有写汇编级别的绝对硬件控制力。
+
+:::
 
 ## Multicore
 为什么需要多核心？
@@ -141,15 +144,16 @@ XMM register是一个大宽度寄存器
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260601183625.webp" alt="Pasted image 20260601183625" width="427" loading="lazy" />
 
-## Thread 
+## Thread
 Thread：顺序执行的一系列指令流
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260601183835.webp" alt="Pasted image 20260601183835" width="461" loading="lazy" />
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260601184350.webp" alt="Pasted image 20260601184350" width="449" loading="lazy" />
 
-> **Note: separate registers**
-> 线程有独立的寄存器是指：寄存器还是那32个固定的，只是线程切换的时候，需要保存当时的寄存器状态，加载某个线程的寄存器状态。在操作系统中，这被称为**上下文切换**
+:::note[separate registers]
+线程有独立的寄存器是指：寄存器还是那32个固定的，只是线程切换的时候，需要保存当时的寄存器状态，加载某个线程的寄存器状态。在操作系统中，这被称为**上下文切换**
+:::
 
 <mark>硬件线程</mark>：它是 CPU 中**真正能够拉取并执行指令的物理实体**。它包含了真实的硅片电路，如运算器、物理寄存器堆等。
 - **数量限制**：数量是非常有限且固定的。比如我们常说一台电脑是“8核16线程”（支持同步多线程/超线程技术），这就意味着这台机器在物理层面上，最多只能同时提供 16 个硬件线程。
@@ -187,9 +191,10 @@ logical threads就是上述的一个核心有多个硬件线程，因为它本�
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260602001511.webp" alt="Pasted image 20260602001511" width="497" loading="lazy" />
 
-> **Note: 数据竞争**
-> - 每个线程都需要访问共享变量 `sum`
-> - 如果线程 A 和线程 B 同时执行到了这一行，它们可能会**同时读取**到旧的 `sum` 值（比如都是 0.0）。接着，它们各自在自己的独立寄存器里做加法，然后先后写回内存。结果就是，后写回的值会**直接覆盖**掉前一个值，导致其中一个线程的计算成果凭空丢失了。最终算出来的 π 值绝对是错误的。
+:::note[数据竞争]
+- 每个线程都需要访问共享变量 `sum`
+- 如果线程 A 和线程 B 同时执行到了这一行，它们可能会**同时读取**到旧的 `sum` 值（比如都是 0.0）。接着，它们各自在自己的独立寄存器里做加法，然后先后写回内存。结果就是，后写回的值会**直接覆盖**掉前一个值，导致其中一个线程的计算成果凭空丢失了。最终算出来的 π 值绝对是错误的。
+:::
 
 为了避免上述的“更新丢失”，我们必须保证同一时刻只能有一个线程去修改 `sum`。如果程序员采用最原始的加锁机制（比如互斥锁 Mutex 或临界区 Critical Section）把 `sum += ...` 这行代码包起来：
 - 虽然答案算对了，但多线程每次循环到这里时，**都必须排队，一个接一个地执行累加**。
@@ -199,16 +204,18 @@ logical threads就是上述的一个核心有多个硬件线程，因为它本�
 
 修改后的代码如上图
 
-> **Note: 并行区域与私有变量**
-> 
+:::note[并行区域与私有变量]
+
 >- `#pragma omp parallel`：注意，这里**没有**加 `for`。这表示启动一个并行区域，里面的代码会被 4 个线程**各自完整地执行一遍**。
 >- `int id = omp_get_thread_num();`：因为这行代码在并行区域内，所以 `id` 是一个**局部变量**。每个线程都会拥有自己独立的一个 `id` 副本（0, 1, 2 或 3）。
+:::
 
 `pi += sum[id]`这行代码会导致数据竞争，导致“更新丢失”，很多线程的 `sum[id]` 根本没被真正加进 `pi` 里，所以最终算出来的 π 值（3.1384...）比正确值小。
 
-> **Note: `#pragma omp parallel`与`#pragma omp parallel for`**
-> - 前者用来划定一个并行区域（Parallel Region）并唤醒一组线程，每个线程都会执行一遍{}区间的代码
-> - 后者这个指令**必须紧挨着一个 `for` 循环**。它会自动把这个 `for` 循环的总迭代次数切碎，平均（或按照设定策略）分配给各个线程
+:::note[`#pragma omp parallel`与`#pragma omp parallel for`]
+- 前者用来划定一个并行区域（Parallel Region）并唤醒一组线程，每个线程都会执行一遍{}区间的代码
+- 后者这个指令**必须紧挨着一个 `for` 循环**。它会自动把这个 `for` 循环的总迭代次数切碎，平均（或按照设定策略）分配给各个线程
+:::
 
 ## Synchronization
 
@@ -229,11 +236,12 @@ logical threads就是上述的一个核心有多个硬件线程，因为它本�
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260602005015.webp" alt="Pasted image 20260602005015" width="512" loading="lazy" />
 
-> **Note: 原子操作**
-> - 原子操作意味着“不可被打断的最小单位”。它要么完全执行，要么完全不执行，不存在“执行了一半”的中间态。
-> - CPU 硬件提供了一种特殊的**单条指令 (Single instruction)**，它能够把“读取内存”和“写入内存”合并成一个动作。
-> - 在这条特殊的指令执行期间，硬件级别的内存控制器会锁住这块共享内存，**绝对不允许 (No other access permitted)** 其他任何线程或物理核心插足。这就从物理电路上杜绝了更新丢失的问题。
-> - 常见的两种硬件实现方案：原子交换、链接读与条件写
+:::note[原子操作]
+- 原子操作意味着“不可被打断的最小单位”。它要么完全执行，要么完全不执行，不存在“执行了一半”的中间态。
+- CPU 硬件提供了一种特殊的**单条指令 (Single instruction)**，它能够把“读取内存”和“写入内存”合并成一个动作。
+- 在这条特殊的指令执行期间，硬件级别的内存控制器会锁住这块共享内存，**绝对不允许 (No other access permitted)** 其他任何线程或物理核心插足。这就从物理电路上杜绝了更新丢失的问题。
+- 常见的两种硬件实现方案：原子交换、链接读与条件写
+:::
 
 <img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260602005550.webp" alt="Pasted image 20260602005550" width="580" loading="lazy" />
 
@@ -243,11 +251,12 @@ logical threads就是上述的一个核心有多个硬件线程，因为它本�
 
 `li t0, 1`加载立即数：将1加载到register t0
 
-> **Note: amoswap**
+:::note[amoswap]
 >**参数拆解**：
 >- `(a0)`: 目标内存地址。`a0` 寄存器里存着那把共享锁在内存中的真实物理地址。
 >- `t0`: 我们要写进去的新值。也就是上一句准备好的 `1`。
 >- `t1`: 用来接收被替换出来的旧值的目标寄存器。
+:::
 
 在不可打断的一个 CPU 时钟周期内，硬件强行把 `t0` 里的 `1` 塞进内存的锁里，**同时**把内存里原本的值拔出来，放进了 `t1` 里。
 
@@ -297,10 +306,11 @@ Big Idea：
 - **读操作随便分享 (If only reading...)**：如果大家都只是读取数据（比如 P1 和 P2 都读地址 1000 的值 20），那绝对安全。多个核心可以同时拥有同一个地址的副本。
 - **写操作必须广而告之 (If a processor writes...)**：一旦某个核心（比如 P0）想要**修改**这个数据，它绝不能偷偷摸摸在自己的 Cache 里改。它必须通过底层的互连网络（总线）**通知**其他所有人：“喂！我要改地址 1000 的数据了！”
 
-> **Note: 总线嗅探与写失效**
-> - **嗅探 (Snoop)**：在英文里是“偷听、窥探”的意思。在计算机里，所有的核心 Cache 都像长了耳朵一样，实时“监听”着公共数据总线上的动静。
-> - **检查标签 (Checking for tags)**：当 P0 在总线上大喊“我要修改地址 1000”时（这被称为一次 Write transaction），P1 和 P2 的 Cache 听到了，就会立刻翻看自己的小本本（Tag 标签）：我有存地址 1000 的数据吗？
-> - **作废/失效 (Invalidate)**：如果 P1 和 P2 发现自己确实存了地址 1000 的副本，它们**不会**去总线上要最新的数据，而是采取最简单暴力的做法——**直接把自己手里的旧数据打上一个“作废（Invalid）”的标记，当垃圾扔掉**
+:::note[总线嗅探与写失效]
+- **嗅探 (Snoop)**：在英文里是“偷听、窥探”的意思。在计算机里，所有的核心 Cache 都像长了耳朵一样，实时“监听”着公共数据总线上的动静。
+- **检查标签 (Checking for tags)**：当 P0 在总线上大喊“我要修改地址 1000”时（这被称为一次 Write transaction），P1 和 P2 的 Cache 听到了，就会立刻翻看自己的小本本（Tag 标签）：我有存地址 1000 的数据吗？
+- **作废/失效 (Invalidate)**：如果 P1 和 P2 发现自己确实存了地址 1000 的副本，它们**不会**去总线上要最新的数据，而是采取最简单暴力的做法——**直接把自己手里的旧数据打上一个“作废（Invalid）”的标记，当垃圾扔掉**
+:::
 
 ## Snoop缓存
 
@@ -432,7 +442,7 @@ TR、TW两个瞬态分别是Transient Read -> Write（从R(dir)到W(id)之间的
 - **动作：** 主目录为了保证一致性，必须向原来在读取的那些节点（`dir` 集合）发送“作废（Invalidate）”请求。
 - **状态含义：** 在所有的作废确认回复（ACK）收齐之前，主目录进入 `TR(dir)` 状态。意思是：**“我正在等这帮老读者把手里的书撕掉，等他们全回复我了，我再把独占权交给 A。”**
 
-- **TW(id) - 等待数据写回 (Transient Write -> Read/Write):**    
+- **TW(id) - 等待数据写回 (Transient Write -> Read/Write):**
 - **场景：** 数据本来被节点 B 独占修改了 `W(B)`。这时节点 C 跑来跟主目录说：“我想读这块数据。”
 - **动作：** 主目录自己手里的数据是过期的，它必须给节点 B 发消息：“B，赶紧把你改好的最新数据交出来（写回/Writeback）！”
 - **状态含义：** 在节点 B 把最新数据传回来之前，主目录进入 `TW(id)` 状态。意思是：**“我正在等那个独占了数据的家伙把最新版本还给我，拿到手之后我才能转发给 C。”**
