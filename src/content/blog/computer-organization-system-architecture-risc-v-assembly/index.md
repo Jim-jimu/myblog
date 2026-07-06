@@ -231,7 +231,7 @@ stack frame 栈帧
 :::note[核心概念：栈帧 / 活动记录 (Procedure Frame / Activation Record / stack frame)]
 
 
->当一个函数被调用时，它在栈上开辟出来的那一整块**专属的内存区域**，就叫做**过程帧 (Procedure frame)** 或者 **活动记录 (Activation record)**。
+当一个函数被调用时，它在栈上开辟出来的那一整块**专属的内存区域**，就叫做**过程帧 (Procedure frame)** 或者 **活动记录 (Activation record)**。
 
 结合我们前几张 PPT 学过的内容，一个完整的“栈帧”里面通常包含了两大块内容：
 
