@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"lib": ["ES2022"],
+		"module": "CommonJS",
+		"moduleResolution": "Node",
+		"outDir": "out",
+		"rootDir": "src",
+		"strict": true,
+		"target": "ES2022",
+		"types": ["node", "vscode"]
+	},
+	"include": ["src/**/*.ts"]
+}

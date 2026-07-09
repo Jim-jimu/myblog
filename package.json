@@ -10,6 +10,8 @@
 		"blogbuild": "pagefind --site dist",
 		"preview": "astro preview",
 		"check": "astro check && biome check",
+		"check:extension": "pnpm --dir tools/typefolio-preview-vscode check",
+		"package:extension": "pnpm --dir tools/typefolio-preview-vscode package",
 		"lint": "biome check --write",
 		"format": "prettier -w . --cache",
 		"hooks:install": "pre-commit install --install-hooks --hook-type pre-commit --hook-type pre-push",

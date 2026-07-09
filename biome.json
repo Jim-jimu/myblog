@@ -11,6 +11,7 @@
 			"!**/.netlify",
 			"!**/.vscode",
 			"!**/.astro",
+			"!tools/typefolio-preview-vscode/out",
 			"!src/env.d.ts"
 		]
 	},

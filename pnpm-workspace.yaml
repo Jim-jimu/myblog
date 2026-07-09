@@ -1,3 +1,8 @@
+packages:
+  - "tools/*"
+
 allowBuilds:
+  "@vscode/vsce-sign": false
   esbuild: true
+  keytar: false
   sharp: true

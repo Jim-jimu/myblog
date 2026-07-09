@@ -7,5 +7,11 @@
 		}
 	},
 	"include": [".astro/types.d.ts", "**/*"],
-	"exclude": ["node_modules", "**/node_modules/*", ".vscode", "dist"]
+	"exclude": [
+		"node_modules",
+		"**/node_modules/*",
+		".vscode",
+		"dist",
+		"tools/typefolio-preview-vscode/out"
+	]
 }

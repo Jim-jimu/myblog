@@ -1,0 +1,103 @@
+{
+	"name": "typefolio-blog-preview-vscode",
+	"displayName": "Typefolio Blog Preview",
+	"description": "Preview Typefolio Astro blog posts from VS Code-compatible editors.",
+	"version": "0.1.1",
+	"publisher": "jimjimu",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Jim-jimu/myblog.git",
+		"directory": "tools/typefolio-preview-vscode"
+	},
+	"engines": {
+		"vscode": "^1.96.0"
+	},
+	"categories": ["Other"],
+	"activationEvents": [
+		"onLanguage:markdown",
+		"onLanguage:mdx",
+		"onCommand:typefolioPreview.openPreview"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "typefolioPreview.openPreview",
+				"title": "Typefolio Preview: Open Blog Preview"
+			},
+			{
+				"command": "typefolioPreview.refreshPreview",
+				"title": "Typefolio Preview: Refresh Blog Preview"
+			},
+			{
+				"command": "typefolioPreview.startDevServer",
+				"title": "Typefolio Preview: Start Astro Dev Server"
+			},
+			{
+				"command": "typefolioPreview.openInBrowser",
+				"title": "Typefolio Preview: Open Blog Preview in Browser"
+			}
+		],
+		"menus": {
+			"editor/title": [
+				{
+					"command": "typefolioPreview.openPreview",
+					"when": "resourceExtname == .md",
+					"group": "navigation"
+				},
+				{
+					"command": "typefolioPreview.openPreview",
+					"when": "resourceExtname == .mdx",
+					"group": "navigation"
+				}
+			]
+		},
+		"configuration": {
+			"title": "Typefolio Blog Preview",
+			"properties": {
+				"typefolioPreview.serverUrl": {
+					"type": "string",
+					"default": "http://localhost:4321",
+					"description": "Astro dev server origin."
+				},
+				"typefolioPreview.basePath": {
+					"type": "string",
+					"default": "/myblog",
+					"description": "Astro base path configured in astro.config.ts."
+				},
+				"typefolioPreview.blogContentRoot": {
+					"type": "string",
+					"default": "src/content/blog",
+					"description": "Workspace-relative folder containing blog posts."
+				},
+				"typefolioPreview.devCommand": {
+					"type": "string",
+					"default": "if command -v pnpm >/dev/null 2>&1; then pnpm dev -- --host 127.0.0.1; else npm run dev -- --host 127.0.0.1; fi",
+					"description": "Command sent to a terminal when starting the Astro dev server. The default uses pnpm when available and falls back to npm."
+				},
+				"typefolioPreview.previewOnSave": {
+					"type": "boolean",
+					"default": true,
+					"description": "Refresh the preview after saving the current blog post."
+				},
+				"typefolioPreview.saveBeforeRefresh": {
+					"type": "boolean",
+					"default": false,
+					"description": "Save the active blog post before refreshing from the preview toolbar."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"compile": "tsc -p .",
+		"watch": "tsc -watch -p .",
+		"check": "tsc -p . --noEmit",
+		"package": "pnpm compile && pnpm dlx @vscode/vsce package"
+	},
+	"devDependencies": {
+		"@types/node": "^22.10.2",
+		"@types/vscode": "^1.96.0",
+		"typescript": "^5.9.3"
+	}
+}

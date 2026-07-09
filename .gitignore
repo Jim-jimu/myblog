@@ -21,6 +21,7 @@ pnpm-debug.log*
 
 # misc
 *.pem
+*.vsix
 .cache
 .astro
 structure.md
