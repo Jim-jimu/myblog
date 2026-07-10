@@ -2,7 +2,7 @@
 	"name": "typefolio-blog-preview-vscode",
 	"displayName": "Typefolio Blog Preview",
 	"description": "Preview Typefolio Astro blog posts from VS Code-compatible editors.",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"publisher": "jimjimu",
 	"license": "MIT",
 	"repository": {

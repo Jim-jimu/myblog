@@ -241,11 +241,17 @@ function getPreviewConfig(workspaceFolder: vscode.WorkspaceFolder): PreviewConfi
 
 function postIdFromRelativePath(relativePath: string) {
 	const withoutExtension = relativePath.replace(/\.(md|mdx)$/i, "");
+	let postId = withoutExtension;
 	if (path.posix.basename(withoutExtension) === "index") {
-		const postId = path.posix.dirname(withoutExtension);
-		return postId === "." ? "" : postId;
+		postId = path.posix.dirname(withoutExtension);
 	}
-	return withoutExtension;
+	if (postId === ".") return "";
+
+	// Astro's glob loader generates lowercase GitHub-style slugs from entry paths.
+	return postId
+		.split("/")
+		.map((segment) => segment.toLowerCase().replaceAll(" ", "-"))
+		.join("/");
 }
 
 function buildPostRoute(config: PreviewConfig, postId: string) {
