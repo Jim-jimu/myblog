@@ -24,6 +24,7 @@ const readingTime: string = remarkPluginFrontmatter.readingTime;
 ---
 
 <BaseLayout
+	wide
 	meta={{
 		articleDate,
 		description,
@@ -36,7 +37,7 @@ const readingTime: string = remarkPluginFrontmatter.readingTime;
 		<div class="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
 			{!!headings.length && <TOC headings={headings} />}
 			<div
-				class="prose prose-sm min-w-0 flex-1 prose-headings:font-semibold prose-headings:text-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-gray-600 prose-headings:hover:before:text-accent sm:prose-headings:before:content-['#'] sm:prose-th:before:content-none"
+				class="prose prose-sm min-w-0 w-full max-w-[80ch] flex-1 prose-headings:font-semibold prose-headings:text-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-gray-600 prose-headings:hover:before:text-accent sm:prose-headings:before:content-['#'] sm:prose-th:before:content-none"
 			>
 				{tldr.length > 0 && <TLDR points={tldr} />}
 				<slot />
@@ -46,7 +47,7 @@ const readingTime: string = remarkPluginFrontmatter.readingTime;
 		</div>
 	</article>
 	<button
-		class="hover:border-link fixed end-4 bottom-8 lg:end-[calc((100vw-600px)/2)] lg:bottom-24 z-90 flex h-10 w-10 translate-y-28 cursor-pointer items-center justify-center rounded-full border-2 border-transparent bg-zinc-200 text-3xl opacity-0 transition-all transition-discrete duration-300 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 sm:end-8 sm:h-12 sm:w-12 dark:bg-zinc-700"
+		class="hover:border-link fixed end-4 bottom-8 lg:end-8 lg:bottom-24 xl:end-[calc((100vw-64rem)/2)] z-90 flex h-10 w-10 translate-y-28 cursor-pointer items-center justify-center rounded-full border-2 border-transparent bg-zinc-200 text-3xl opacity-0 transition-all transition-discrete duration-300 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 sm:end-8 sm:h-12 sm:w-12 dark:bg-zinc-700"
 		data-show="false"
 		id="to-top-btn"
 	>
