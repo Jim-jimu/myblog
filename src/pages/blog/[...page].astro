@@ -99,21 +99,39 @@ const descYearKeys = Object.keys(groupedByYear).sort((a, b) => +b - +a);
 				)
 			}
 			{
-				descYearKeys.map((yearKey) => (
-					<section class="mb-4">
-						<h2 id={`year-${yearKey}`} class="title text-lg">
-							<span class="sr-only">Posts in</span>
-							{yearKey}
-						</h2>
-						<ul class="mt-2 space-y-1 text-start">
-							{groupedByYear[yearKey]?.map((p) => (
-								<li class="grid sm:grid-cols-[auto_1fr] sm:[&_q]:col-start-2">
-									<PostPreview post={p} />
-								</li>
-							))}
-						</ul>
-					</section>
-				))
+				descYearKeys.map((yearKey) => {
+					const yearPosts = groupedByYear[yearKey] ?? [];
+
+					return (
+						<details class="group mb-3">
+							<summary
+								class="title hover:text-accent flex cursor-pointer list-none items-center gap-2 py-1 text-lg [&::-webkit-details-marker]:hidden"
+								id={`year-${yearKey}`}
+							>
+								<Icon
+									aria-hidden="true"
+									class="h-5 w-5 shrink-0 transition-transform duration-150 group-open:rotate-90"
+									focusable="false"
+									name="mdi:chevron-right"
+								/>
+								<span>
+									<span class="sr-only">Posts in</span>
+									{yearKey}
+								</span>
+								<span class="font-sans text-xs font-normal text-gray-600 dark:text-gray-400">
+									{yearPosts.length} {yearPosts.length === 1 ? "post" : "posts"}
+								</span>
+							</summary>
+							<ul class="mt-2 space-y-1 ps-7 text-start">
+								{yearPosts.map((p) => (
+									<li class="grid sm:grid-cols-[auto_1fr] sm:[&_q]:col-start-2">
+										<PostPreview post={p} />
+									</li>
+								))}
+							</ul>
+						</details>
+					);
+				})
 			}
 			{(<Pagination {...paginationProps} />)}
 		</div>
