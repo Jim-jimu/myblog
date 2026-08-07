@@ -160,7 +160,8 @@
 	}
 }
 
-.gallery-rail-scrollbar {
+.gallery-rail-scrollbar,
+.toc-scrollbar {
 	scrollbar-width: thin;
 	scrollbar-color: color-mix(in oklch, var(--color-rule) 85%, transparent) transparent;
 }
@@ -176,6 +177,25 @@
 .gallery-rail-scrollbar::-webkit-scrollbar-thumb {
 	background: color-mix(in oklch, var(--color-rule) 85%, transparent);
 	border-radius: 999px;
+}
+
+@media (min-width: 64rem) {
+	.toc-scrollbar {
+		scrollbar-gutter: stable;
+	}
+
+	.toc-scrollbar::-webkit-scrollbar {
+		width: 0.5rem;
+	}
+
+	.toc-scrollbar::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.toc-scrollbar::-webkit-scrollbar-thumb {
+		background: color-mix(in oklch, var(--color-rule) 85%, transparent);
+		border-radius: 999px;
+	}
 }
 
 /* Keep copy button styles outside Tailwind layers: Expressive Code injects `.copy` markup at runtime,

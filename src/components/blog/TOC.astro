@@ -14,7 +14,10 @@ const toc = generateToc(headings);
 
 <details open class="lg:sticky lg:top-12 lg:order-2 lg:basis-64 lg:shrink-0" data-toc>
 	<summary class="title hover:marker:text-accent cursor-pointer text-lg">Table of Contents</summary>
-	<nav class="ms-4 lg:w-full">
+	<nav
+		class="toc-scrollbar ms-4 lg:max-h-[60vh] lg:w-full lg:overflow-y-auto lg:overscroll-contain lg:pe-3"
+		data-toc-scroll
+	>
 		<ol class="mt-4">
 			{toc.map((heading) => <TOCHeading heading={heading} />)}
 		</ol>
