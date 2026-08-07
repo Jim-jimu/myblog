@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import { withBase } from "@/utils/url";
 
 const meta = {
 	description:
@@ -10,25 +11,12 @@ const meta = {
 
 <PageLayout meta={meta}>
 	<h1 class="title mb-4">About</h1>
-	<div class="index-content">
+	<h2 class="title mb-2 text-xl">This site</h2>
+	<div class="index-content mb-4">
 		<p>
 			This site is built with Astro Typefolio and is used to publish technical
 			articles, course notes, project records, and Typst handouts.
 		</p>
-		<p>
-			Regular posts are written in Markdown or MDX. Handouts, assignments, and
-			reports that need formal typesetting are written in Typst, exported as
-			PDFs, and embedded in their related pages.
-		</p>
-		<p>The current template already includes:</p>
-		<ul class="list-inside list-disc" role="list">
-			<li>Markdown / MDX posts and tag archives</li>
-			<li>KaTeX math rendering</li>
-			<li>Syntax highlighting and titled code blocks</li>
-			<li>Pagefind static search</li>
-			<li>RSS, sitemap, and Open Graph image generation</li>
-			<li>Light and dark themes</li>
-		</ul>
 		<p>
 			Template source: <a
 				class="typefolio-link inline-block"
@@ -38,4 +26,63 @@ const meta = {
 			>
 		</p>
 	</div>
+	<h2 class="title mb-2 text-xl">Me</h2>
+		<div class="index-content mb-4">
+			<p>
+				I'm a 3rd year undergraduate student at Zhejiang University. I'm currently
+				pursuing a CS Phd or M.S. in Fall 2027.
+			</p>
+			<p>Email: jin-yike@zju.edu.cn</p>
+		</div>
+		<section class="mt-8" aria-labelledby="research-interest-heading">
+			<h1 class="title mb-4" id="research-interest-heading">Research Interest</h1>
+			<div class="index-content">
+				<p>
+					GUI Agents, Multimodal Large Language Models, and Lifelong Agent Learning,
+					with an emphasis on:
+				</p>
+				<ul class="list-disc" role="list">
+					<li>
+						<strong>Self-evolving skill systems for autonomous GUI agents</strong>,
+						supporting the full skill lifecycle from discovery and acquisition to
+						retrieval, execution, evaluation, refinement, reuse, and cross-application
+						composition.
+					</li>
+					<li>
+						<strong>Parametric memory for agents</strong>, investigating how skills,
+						procedural knowledge, and interaction trajectories can be compressed into
+						model parameters or lightweight adapters for efficient retrieval, continual
+						updating, and scalable long-term memory.
+					</li>
+				</ul>
+			</div>
+		</section>
+		<section class="mt-8" aria-labelledby="education-heading">
+		<h2 class="title mb-4 text-xl" id="education-heading">Education</h2>
+		<article class="project-card">
+			<div class="flex items-center gap-6 sm:gap-8">
+				<img
+					alt="Zhejiang University emblem"
+					class="h-24 w-24 shrink-0 object-contain sm:h-28 sm:w-28"
+					decoding="async"
+					height="469"
+					loading="lazy"
+					src={withBase("/assets/ZJU-Banner2.svg")}
+					width="464"
+				/>
+				<div class="min-w-0">
+					<p class="m-0 text-sm text-gray-600 dark:text-gray-400">
+						2023.06 - Present
+					</p>
+					<h3 class="text-accent-2 mt-1 text-lg font-semibold wrap-break-word">
+						Zhejiang University
+					</h3>
+					<p class="mt-2 mb-0">College of Computer Science &amp; Technology</p>
+					<p class="mt-1 mb-0 text-sm text-gray-600 dark:text-gray-400">
+						Major in Industrial Design
+					</p>
+				</div>
+			</div>
+		</article>
+	</section>
 </PageLayout>
