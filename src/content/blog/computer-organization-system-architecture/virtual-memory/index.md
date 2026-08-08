@@ -7,11 +7,11 @@ pinned: false
 giscus: false
 ---
 
-[Course index](../computer-organization-system-architecture-notes/) · [Previous: Cache](../computer-organization-system-architecture-cache/) · [Next: I/O and Parallelism](../computer-organization-system-architecture-parallelism/)
+[Course index](../) · [Previous: Cache](../cache/) · [Next: I/O and Parallelism](../parallelism/)
 
 ## OS Functions
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523110508.webp" alt="Pasted image 20260523110508" width="512" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523110508.webp" alt="Pasted image 20260523110508" width="512" loading="lazy" />
 
 :::note[线程(Process) VS 进程（Threads）]
 - **进程 (Process):** 在操作系统眼里，运行起来的应用程序统称为“进程”。进程最大的特点是**内存隔离 (separate memory)**。OS 会为每个进程分配独立的虚拟内存空间，一个进程崩溃通常不会直接带走另一个进程。
@@ -19,26 +19,26 @@ giscus: false
 - 这俩都能在 CPU 上（通过系统调度）实现**伪并发 (pseudo simultaneously)** 运行。
 :::
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523110532.webp" alt="Pasted image 20260523110532" width="511" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523110532.webp" alt="Pasted image 20260523110532" width="511" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523110836.webp" alt="Pasted image 20260523110836" width="519" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523110836.webp" alt="Pasted image 20260523110836" width="519" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523110907.webp" alt="Pasted image 20260523110907" width="515" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523110907.webp" alt="Pasted image 20260523110907" width="515" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523110924.webp" alt="Pasted image 20260523110924" width="508" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523110924.webp" alt="Pasted image 20260523110924" width="508" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523111028.webp" alt="Pasted image 20260523111028" width="499" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523111028.webp" alt="Pasted image 20260523111028" width="499" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523111205.webp" alt="Pasted image 20260523111205" width="504" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523111205.webp" alt="Pasted image 20260523111205" width="504" loading="lazy" />
 
 当时间片（Time Slice）耗尽，硬件定时器就会“响”。这个“响声”是一个硬件中断（interrupt）
 这个中断会强制 CPU 暂停当前的用户程序，将状态切换为管态（Supervisor Mode），并自动跳转回操作系统内核的 Trap Handler 中。
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523111607.webp" alt="Pasted image 20260523111607" width="501" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523111607.webp" alt="Pasted image 20260523111607" width="501" loading="lazy" />
 
 ## Virtual Memory
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523115427.webp" alt="Pasted image 20260523115427" width="506" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523115427.webp" alt="Pasted image 20260523115427" width="506" loading="lazy" />
 
 ## Physical Memory and Storage
 
@@ -55,12 +55,12 @@ giscus: false
 | **功耗表现** | 待机功耗极低                           | 功耗相对较高（因为需要频繁执行刷新动作）           |
 | **常见用途** | **CPU 内部缓存**（L1 / L2 / L3 Cache） | **计算机主存**（你买的 DDR4 / DDR5 内存条） |
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523113804.webp" alt="Pasted image 20260523113804" width="537" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523113804.webp" alt="Pasted image 20260523113804" width="537" loading="lazy" />
 
 storage主要就是指disk，SSD（固态硬盘），HDD（机械硬盘）
 SSD 是一种完整的存储设备，而 Flash Memory（特别是 NAND Flash）是 SSD 内部用来真正存放数据的载体。
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523114801.webp" alt="Pasted image 20260523114801" width="529" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523114801.webp" alt="Pasted image 20260523114801" width="529" loading="lazy" />
 
 ## Memory Manager
 问题的引入：
@@ -83,23 +83,23 @@ CPU 核心可以分时复用，寄存器可以快速保存。**但是物理内�
 
 :::
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523115312.webp" alt="Pasted image 20260523115312" width="528" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523115312.webp" alt="Pasted image 20260523115312" width="528" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523115330.webp" alt="Pasted image 20260523115330" width="538" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523115330.webp" alt="Pasted image 20260523115330" width="538" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523115348.webp" alt="Pasted image 20260523115348" width="536" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523115348.webp" alt="Pasted image 20260523115348" width="536" loading="lazy" />
 
 ## Paged Memory
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523130416.webp" alt="Pasted image 20260523130416" width="534" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523130416.webp" alt="Pasted image 20260523130416" width="534" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523130625.webp" alt="Pasted image 20260523130625" width="548" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523130625.webp" alt="Pasted image 20260523130625" width="548" loading="lazy" />
 
 操作系统把虚拟内存和真实的物理内存（DRAM）都切分成固定大小的“块”，这个块就叫做**页（Page）**。通常一页的大小是 4KB。
 翻译的时候，我们不再精确到每一个字节，而是**以“页”为单位进行粗粒度翻译**。
 分页翻译的本质，就是“替换页号，保留偏移量”
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523131045.webp" alt="Pasted image 20260523131045" width="541" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523131045.webp" alt="Pasted image 20260523131045" width="541" loading="lazy" />
 
 这一页ppt计算了一个进程的page table有足足4MB，cache根本装不下，只能把这个巨大的“翻译字典（页表）”存放到普通的物理内存（DRAM）中。这就会带来访问DRAM需要两次。DRAM 的速度比 CPU 慢上百倍。现在所有内存操作都要磨洋工做两次，**这直接导致整个计算机的运行速度被拦腰斩断（降低 50% 以上）**。这是绝对无法接受的。
 
@@ -110,15 +110,15 @@ CPU 核心可以分时复用，寄存器可以快速保存。**但是物理内�
 
 ## Page Faults
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523130827.webp" alt="Pasted image 20260523130827" width="564" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523130827.webp" alt="Pasted image 20260523130827" width="564" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523131259.webp" alt="Pasted image 20260523131259" width="551" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523131259.webp" alt="Pasted image 20260523131259" width="551" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523131643.webp" alt="Pasted image 20260523131643" width="545" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523131643.webp" alt="Pasted image 20260523131643" width="545" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523131959.webp" alt="Pasted image 20260523131959" width="551" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523131959.webp" alt="Pasted image 20260523131959" width="551" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260523132017.webp" alt="Pasted image 20260523132017" width="565" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260523132017.webp" alt="Pasted image 20260523132017" width="565" loading="lazy" />
 
 DISK只能接受write-back，因为write-through很慢
 
@@ -128,13 +128,13 @@ DISK只能接受write-back，因为write-through很慢
 Virtual Memory中的offset(后12位)在翻译过程中会透传，表示在某一页中的相对位置（offset）。那么将VM Address翻译成真实的Physical Memory Address就是需要查询Page table，因此页表的作用就是将 VM Address 映射为Physical Memory Address
 :::
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260529162903.webp" alt="Pasted image 20260529162903" width="531" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260529162903.webp" alt="Pasted image 20260529162903" width="531" loading="lazy" />
 
 问题的引入：单级的Page table，一个就需要4MB，如果有很多进程，会很占用内存！
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260529163440.webp" alt="Pasted image 20260529163440" width="510" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260529163440.webp" alt="Pasted image 20260529163440" width="510" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260529163540.webp" alt="Pasted image 20260529163540" width="502" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260529163540.webp" alt="Pasted image 20260529163540" width="502" loading="lazy" />
 
 :::note[PTE]
 上面说了页表类似一个字典，这个字典是利用一块连续地址的内存实现，那么它的键实际上就是利用VPN在memory中找到的一个地址，然后这个memory中存储的就是一个Page Table Entry(PTE)，“值”。它是32位的，结构如上图，如果说它是一个叶子PTE节点，那么它里面存储PPN就可以直接找到真实的物理地址(PPN[1] + PPN[0] + offset拼接起来)；如果不是叶子PTE节点，那么它的PPN指向下一级页表的基地址，具体来说，是 PPN[0] 拼接 PPN[1] 拼接12位0
@@ -150,17 +150,17 @@ Virtual Memory中的offset(后12位)在翻译过程中会透传，表示在某�
 
 ## Translation Lookaside Buffers（TLB）
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260529174608.webp" alt="Pasted image 20260529174608" width="534" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260529174608.webp" alt="Pasted image 20260529174608" width="534" loading="lazy" />
 
 问题：之前提到过，如果用1级页表，那么每次翻译虚拟内存需要2次访问内存；如果用2级页表，每次翻译虚拟内存需要2次访问内存，以此类推。所以我们需要一个buffer（为什么不叫cache是因为它出现的时间比cache早）
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260529174739.webp" alt="Pasted image 20260529174739" width="525" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260529174739.webp" alt="Pasted image 20260529174739" width="525" loading="lazy" />
 
 TLB 就是把多级页表寻址的最终结果（叶子 PPN + 权限位）**和**初始输入（VPN）直接绑定在一起的缓存。
 也就是说，无论用的是几个级别的Page Table，直接拿原始的VPN去查，hit了查到的就是最终叶子节点的PPN.
 上图中是一个全相联的TLB结构，直接拿VPN当作tag（索引），去TLB里找PPN，因为是全相联，会判断TLB中所有的tag有没有一个是等于VPN的
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260529174804.webp" alt="Pasted image 20260529174804" width="516" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260529174804.webp" alt="Pasted image 20260529174804" width="516" loading="lazy" />
 
 :::note[TLB Reach （TLB 覆盖范围）]
 这是这页 PPT 最关键的一个概念，直接决定了底层软件的性能上限。
@@ -170,25 +170,25 @@ TLB 就是把多级页表寻址的最终结果（叶子 PPN + 权限位）**和*
 - **现实中的性能灾难（TLB 颠簸）：** 如果你的程序在跑一个极其吃内存的算法（比如遍历一个 50MB 的大数组），而你的 TLB Reach 只有 256KB。这意味着 CPU 会在非常短的时间内跨越海量的页面。TLB 会疯狂发生 Miss，CPU 会把大量时间浪费在查内存页表上，导致性能暴跌。
 :::
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260529174920.webp" alt="Pasted image 20260529174920" width="507" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260529174920.webp" alt="Pasted image 20260529174920" width="507" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260529174856.webp" alt="Pasted image 20260529174856" width="509" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260529174856.webp" alt="Pasted image 20260529174856" width="509" loading="lazy" />
 
 （上图VPN被分为tag和index是因为这里使用的是组相联 or direct-map）
 
 ## TLBs in Datapath
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260529195920.webp" alt="Pasted image 20260529195920" width="492" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260529195920.webp" alt="Pasted image 20260529195920" width="492" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260529195932.webp" alt="Pasted image 20260529195932" width="521" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260529195932.webp" alt="Pasted image 20260529195932" width="521" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260529195951.webp" alt="Pasted image 20260529195951" width="505" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260529195951.webp" alt="Pasted image 20260529195951" width="505" loading="lazy" />
 
 ## VM Performance
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260529195443.webp" alt="Pasted image 20260529195443" width="484" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260529195443.webp" alt="Pasted image 20260529195443" width="484" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260529200105.webp" alt="Pasted image 20260529200105" width="477" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260529200105.webp" alt="Pasted image 20260529200105" width="477" loading="lazy" />
 
 :::note[Page Hit/Miss]
 这里Page hit指的是数据在内存中
@@ -203,7 +203,7 @@ TLB hit / miss：关心的是“页表项是否在 TLB 里”
 按需加载页，也就是上述说的Paged Memory的全部
 :::
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260529201658.webp" alt="Pasted image 20260529201658" width="472" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260529201658.webp" alt="Pasted image 20260529201658" width="472" loading="lazy" />
 
 其实这里还是这样算比较好，no paging：
 $$
@@ -220,14 +220,14 @@ $$
 \end{aligned}
 $$
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260529201707.webp" alt="Pasted image 20260529201707" width="501" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260529201707.webp" alt="Pasted image 20260529201707" width="501" loading="lazy" />
 
 $HR_{Mem}$就是Hit Rate of Main Memory（主存命中率）
 # I/O
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260529213051.webp" alt="Pasted image 20260529213051" width="509" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260529213051.webp" alt="Pasted image 20260529213051" width="509" loading="lazy" />
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260530163301.webp" alt="Pasted image 20260530163301" width="493" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260530163301.webp" alt="Pasted image 20260530163301" width="493" loading="lazy" />
 
 :::note[Memory Mapped IO]
 **Memory-Mapped I/O (MMIO)**，即**内存映射 I/O**，是计算机中 CPU 与外部设备（如网卡、显卡、硬盘控制器等）进行通信和数据交换的一种架构设计和技术。
@@ -243,8 +243,8 @@ $HR_{Mem}$就是Hit Rate of Main Memory（主存命中率）
 3. **总线路由：** 计算机的主板芯片组或内存控制器会监听这些地址。如果 CPU 访问的地址属于物理 RAM，数据就会存入内存条；如果访问的地址属于某个外设的映射区域，硬件总线（如 PCIe 总线）就会将这次读写操作直接路由到对应的外设寄存器中。
 :::
 
-<img src="../../notes/computer-organization-system-architecture/images/pasted-image-20260530163555.webp" alt="Pasted image 20260530163555" width="499" loading="lazy" />
+<img src="../../../notes/computer-organization-system-architecture/images/pasted-image-20260530163555.webp" alt="Pasted image 20260530163555" width="499" loading="lazy" />
 
 ---
 
-[Course index](../computer-organization-system-architecture-notes/) · [Previous: Cache](../computer-organization-system-architecture-cache/) · [Next: I/O and Parallelism](../computer-organization-system-architecture-parallelism/)
+[Course index](../) · [Previous: Cache](../cache/) · [Next: I/O and Parallelism](../parallelism/)
