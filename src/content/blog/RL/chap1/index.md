@@ -159,3 +159,44 @@ $$
 $$
 智能体主要关心马上获得的奖励，表现得比较“短视”。
 当  $\gamma$ 接近 1 时，远期奖励衰减得比较慢，智能体更愿意为了将来的较大收益暂时放弃当前收益。
+
+## Episode
+
+智能体按照某个策略 $\pi$ 与环境不断交互
+$$
+S_t \xrightarrow{A_t,\;R_{t+1}} S_{t+1}
+$$
+如果最终到达某个终止状态 terminal state，交互就停止。从初始状态到终止状态的trajactory，称为一个 Episode，也叫 trial。
+
+一个episode通常是一个有限的轨迹。
+
+- 存在明确起点和终点、每次到达终止状态后重新开始的任务，称为episodic tasks
+- 如果任务的轨迹可能是无限的，则称为continuous tasks
+
+在网格世界示例中，我们是否应该在到达目标后停止？
+- 将目标状态视为具有策略的正常状态。智能体仍然可以离开目标状态，并在进入目标状态时获得r = +1的奖励。
+- 我们无需将目标状态与其他状态区分开来，可以将其视为正常状态
+
+## Markov decision process （MDP）
+
+Key elements of MDP:
+
+- **Sets**:
+  - State: the set of states $\mathcal{S}$
+  - Action: the set of actions $\mathcal{A}(s)$ is associated for state $s \in \mathcal{S}$.
+  - Reward: the set of rewards $\mathcal{R}(s, a)$.
+- **Probability distribution** (or called system model):
+  - State transition probability: at state $s$, taking action $a$, the probability to transit to state $s'$ is $p(s'|s, a)$
+  - Reward probability: at state $s$, taking action $a$, the probability to get reward $r$ is $p(r|s, a)$
+- **Policy**: at state $s$, the probability to choose action $a$ is $\pi(a|s)$
+- *Markov property*: memoryless property
+  $$
+  p(s_{t+1}|a_t, s_t, \dots, a_0, s_0) = p(s_{t+1}|a_t, s_t),
+  $$
+  $$
+  p(r_{t+1}|a_t, s_t, \dots, a_0, s_0) = p(r_{t+1}|a_t, s_t).
+  $$
+
+All the concepts introduced in this lecture can be put in the framework in MDP.
+
+![alt text](image-9.png)
