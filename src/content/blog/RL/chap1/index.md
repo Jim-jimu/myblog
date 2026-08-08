@@ -10,7 +10,7 @@ giscus: false
 ## A grid-world example
 
 一个网格世界，非常经典的例子
-![alt text](image.png)
+![alt text](image.png){width=650}
 
 机器人可以到达相邻的网格，不能进入forbidden的网格，且网格四周有边界
 - 任务：找到一个比较好的路径从起点到终点
@@ -125,7 +125,7 @@ $$
 
 return是轨迹中所有reward的和，数学上可以用return刻画一个策略的好坏
 
-### Discounted return
+### Discounted return 折扣汇报
 
 为什么需要这么一个东西呢，看以下这种情况，一个轨迹：
 $$
@@ -137,4 +137,25 @@ $$
 return = 0 + 0 + 0 + 1 + 1 + 1 = \dots
 $$
 
-![alt text](image-8.png)
+![alt text](image-8.png){width=60%}
+
+由此定义discount rate 折扣因子 $\gamma \in (0,1)$，则discount return 定义为：
+
+$$
+\begin{aligned}
+\text{discount return} &= 0 + \gamma 0 + \gamma^2 0 + \gamma^3 1 + \gamma^4 1 + \gamma^5 1 + \dots \\
+& = \gamma^3 + \gamma^4 + \gamma^5 + \dots \\
+& = \frac{\gamma^3}{1-\gamma}
+\end{aligned}
+$$
+
+折扣汇报的作用：
+- 让无限回报成为有限值
+- 平衡近期奖励与远期奖励
+
+当 $\gamma$ 接近 0 时：
+$$
+\gamma^k\rightarrow0
+$$
+智能体主要关心马上获得的奖励，表现得比较“短视”。
+当  $\gamma$ 接近 1 时，远期奖励衰减得比较慢，智能体更愿意为了将来的较大收益暂时放弃当前收益。
