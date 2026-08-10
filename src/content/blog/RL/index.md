@@ -14,7 +14,7 @@ giscus: false
 | No. | Description | Status |
 | ---- | ----------- | ---- |
 | chapter1 | [Basic Concepts](./chap1/)| ✅ |
-| chapter2 | | ---- |
+| chapter2 | [Bellman Equation](./chap2/)| ❌ |
 | chapter3 | | ---- |
 | chapter4 | | ---- |
 | chapter5 |  | ---- |
