@@ -21,6 +21,7 @@ import { remarkGithubCard } from "./src/plugins/remark-github-card";
 import { remarkImageWidth } from "./src/plugins/remark-image-width";
 import { remarkPostBacklinks } from "./src/plugins/remark-post-backlinks";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time";
+import { remarkTextColor } from "./src/plugins/remark-text-color";
 import { expressiveCodeOptions, siteConfig } from "./src/site.config";
 
 // https://astro.build/config
@@ -87,6 +88,7 @@ export default defineConfig({
 			remarkReadingTime,
 			remarkMath,
 			remarkDirective,
+			remarkTextColor,
 			remarkGithubCard,
 			remarkAdmonitions,
 			remarkPostBacklinks,

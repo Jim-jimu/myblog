@@ -96,6 +96,42 @@
 		height: auto;
 	}
 
+	.markdown-text-color-red {
+		@apply text-red-700 dark:text-red-400;
+	}
+
+	.markdown-text-color-blue {
+		@apply text-blue-700 dark:text-blue-400;
+	}
+
+	.markdown-text-color-green {
+		@apply text-green-700 dark:text-green-400;
+	}
+
+	.markdown-text-color-orange {
+		@apply text-orange-700 dark:text-orange-400;
+	}
+
+	.markdown-text-color-yellow {
+		@apply text-amber-700 dark:text-amber-300;
+	}
+
+	.markdown-text-color-purple {
+		@apply text-purple-700 dark:text-purple-400;
+	}
+
+	.markdown-text-color-pink {
+		@apply text-pink-700 dark:text-pink-400;
+	}
+
+	.markdown-text-color-teal {
+		@apply text-teal-700 dark:text-teal-400;
+	}
+
+	.markdown-text-color-gray {
+		@apply text-gray-600 dark:text-gray-400;
+	}
+
 	.title {
 		@apply text-accent-2 text-2xl font-semibold wrap-break-word;
 	}
