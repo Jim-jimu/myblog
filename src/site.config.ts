@@ -28,7 +28,7 @@ export const siteConfig: SiteConfig = {
 	*/
 	title: "Jimjimu Notes",
 	// ! Please remember to replace the following site property with your own domain, used in astro.config.ts
-	url: "https://jim-jimu.github.io/myblog/",
+	url: "https://jim-jimu.github.io/",
 };
 
 export const giscusConfig = {

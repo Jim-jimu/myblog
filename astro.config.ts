@@ -29,7 +29,7 @@ import { expressiveCodeOptions, siteConfig } from "./src/site.config";
 // https://astro.build/config
 export default defineConfig({
 	site: siteConfig.url,
-	base: "/myblog",
+	base: "/",
 	integrations: [
 		expressiveCode(expressiveCodeOptions),
 		icon(),
@@ -60,7 +60,7 @@ export default defineConfig({
 					type: "image/png",
 				},
 			],
-			start_url: "/myblog/",
+			start_url: "/",
 			background_color: "#1d1f21",
 			theme_color: "#2bbc8a",
 			display: "standalone",

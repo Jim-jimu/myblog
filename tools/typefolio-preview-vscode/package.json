@@ -7,7 +7,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Jim-jimu/myblog.git",
+		"url": "https://github.com/Jim-jimu/Jim-jimu.github.io.git",
 		"directory": "tools/typefolio-preview-vscode"
 	},
 	"engines": {
@@ -63,7 +63,7 @@
 				},
 				"typefolioPreview.basePath": {
 					"type": "string",
-					"default": "/myblog",
+					"default": "/",
 					"description": "Astro base path configured in astro.config.ts."
 				},
 				"typefolioPreview.blogContentRoot": {

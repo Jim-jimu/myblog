@@ -175,7 +175,7 @@ class TypefolioPreviewController {
 function getPreviewConfig(workspaceFolder) {
     const config = vscode.workspace.getConfiguration("typefolioPreview", workspaceFolder.uri);
     return {
-        basePath: normalizeBasePath(config.get("basePath", "/myblog")),
+        basePath: normalizeBasePath(config.get("basePath", "/")),
         blogContentRoot: normalizeRelativePath(config.get("blogContentRoot", "src/content/blog")),
         devCommand: config.get("devCommand", DEFAULT_DEV_COMMAND),
         previewOnSave: config.get("previewOnSave", true),

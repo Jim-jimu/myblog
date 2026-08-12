@@ -14,13 +14,13 @@ This extension does not implement its own Markdown renderer. It opens the real A
 
 The preview URL is derived from the file path:
 
-- `src/content/blog/example/index.md` -> `/myblog/blog/example/`
-- `src/content/blog/testing/missing-content.md` -> `/myblog/blog/testing/missing-content/`
+- `src/content/blog/example/index.md` -> `/blog/example/`
+- `src/content/blog/testing/missing-content.md` -> `/blog/testing/missing-content/`
 
 ## Settings
 
 - `typefolioPreview.serverUrl`: Astro dev server origin. Default: `http://localhost:4321`
-- `typefolioPreview.basePath`: Astro base path. Default: `/myblog`
+- `typefolioPreview.basePath`: Astro base path. Default: `/`
 - `typefolioPreview.blogContentRoot`: Blog content folder. Default: `src/content/blog`
 - `typefolioPreview.devCommand`: Dev command sent to the terminal. Default: use `pnpm dev -- --host 127.0.0.1` when `pnpm` is available, otherwise use `npm run dev -- --host 127.0.0.1`.
 - `typefolioPreview.previewOnSave`: Refresh after saving. Default: `true`
