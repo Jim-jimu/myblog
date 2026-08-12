@@ -16,10 +16,12 @@ import rehypeUnwrapImages from "rehype-unwrap-images";
 // Remark plugins
 import remarkDirective from "remark-directive"; /* Handle ::: directives as nodes */
 import remarkMath from "remark-math";
+import { rehypePseudocodeMath } from "./src/plugins/rehype-pseudocode-math";
 import { remarkAdmonitions } from "./src/plugins/remark-admonitions"; /* Add admonitions */
 import { remarkGithubCard } from "./src/plugins/remark-github-card";
 import { remarkImageWidth } from "./src/plugins/remark-image-width";
 import { remarkPostBacklinks } from "./src/plugins/remark-post-backlinks";
+import { remarkPseudocode } from "./src/plugins/remark-pseudocode";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time";
 import { remarkTextColor } from "./src/plugins/remark-text-color";
 import { expressiveCodeOptions, siteConfig } from "./src/site.config";
@@ -80,6 +82,7 @@ export default defineConfig({
 					target: "_blank",
 				},
 			],
+			rehypePseudocodeMath,
 			rehypeKatex,
 			rehypeUnwrapImages,
 		],
@@ -89,6 +92,7 @@ export default defineConfig({
 			remarkMath,
 			remarkDirective,
 			remarkTextColor,
+			remarkPseudocode,
 			remarkGithubCard,
 			remarkAdmonitions,
 			remarkPostBacklinks,

@@ -81,6 +81,7 @@
 	@import "./components/github-card.css";
 	@import "./components/inline-icon-link.css";
 	@import "./components/projects-card.css";
+	@import "./components/pseudocode.css";
 
 	.typefolio-link {
 		@apply hover:decoration-link underline underline-offset-2 hover:decoration-2;

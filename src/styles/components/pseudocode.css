@@ -1,0 +1,88 @@
+.pseudocode {
+	--pseudocode-rule: color-mix(in oklch, var(--color-global-text) 72%, transparent);
+	--pseudocode-muted: color-mix(in oklch, var(--color-global-text) 65%, transparent);
+	margin-block: 1.75rem;
+	overflow-x: auto;
+	border-block: 1px solid var(--pseudocode-rule);
+	background: transparent;
+	color: var(--color-global-text);
+	font-family: Georgia, Cambria, "Times New Roman", "Noto Serif SC", serif;
+	font-size: 0.98rem;
+	line-height: 1.42;
+	scrollbar-width: thin;
+}
+
+.pseudocode-caption {
+	min-width: max-content;
+	padding: 0.35rem 0.25rem 0.3rem;
+	border-top: 2px solid var(--color-global-text);
+	border-bottom: 1px solid var(--pseudocode-rule);
+	font-size: 1.05rem;
+}
+
+.pseudocode-caption-label,
+.pseudocode-input-label {
+	font-weight: 700;
+}
+
+.pseudocode-inputs {
+	min-width: max-content;
+	padding-block: 0.25rem 0.15rem;
+}
+
+.pseudocode-input-row {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	column-gap: 0.65rem;
+	padding-inline: 0.25rem;
+}
+
+.pseudocode-body {
+	min-width: max-content;
+	padding-block: 0.1rem 0.35rem;
+}
+
+.pseudocode-line {
+	display: grid;
+	grid-template-columns: 2.3rem 1fr;
+	align-items: baseline;
+	padding-inline: 0.25rem 0.75rem;
+}
+
+.pseudocode-line-number {
+	padding-inline-end: 0.55rem;
+	color: var(--pseudocode-muted);
+	text-align: end;
+	font-variant-numeric: tabular-nums;
+	user-select: none;
+}
+
+.pseudocode-line-content {
+	display: inline-block;
+	padding-inline-start: calc(var(--pseudocode-indent) * 1.4rem);
+	white-space: pre;
+}
+
+.pseudocode-comment {
+	margin-inline-start: 0.45rem;
+	color: var(--pseudocode-muted);
+	font-style: italic;
+}
+
+.pseudocode .katex {
+	font-size: 1em;
+}
+
+@media (max-width: 40rem) {
+	.pseudocode {
+		font-size: 0.92rem;
+	}
+
+	.pseudocode-line {
+		grid-template-columns: 2rem 1fr;
+	}
+
+	.pseudocode-line-content {
+		padding-inline-start: calc(var(--pseudocode-indent) * 1.1rem);
+	}
+}
