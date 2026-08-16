@@ -18,6 +18,7 @@ import remarkDirective from "remark-directive"; /* Handle ::: directives as node
 import remarkMath from "remark-math";
 import { rehypePseudocodeMath } from "./src/plugins/rehype-pseudocode-math";
 import { remarkAdmonitions } from "./src/plugins/remark-admonitions"; /* Add admonitions */
+import { remarkColumns } from "./src/plugins/remark-columns";
 import { remarkGithubCard } from "./src/plugins/remark-github-card";
 import { remarkImageWidth } from "./src/plugins/remark-image-width";
 import { remarkPostBacklinks } from "./src/plugins/remark-post-backlinks";
@@ -91,6 +92,7 @@ export default defineConfig({
 			remarkReadingTime,
 			remarkMath,
 			remarkDirective,
+			remarkColumns,
 			remarkTextColor,
 			remarkPseudocode,
 			remarkGithubCard,
