@@ -25,6 +25,7 @@ import { remarkPostBacklinks } from "./src/plugins/remark-post-backlinks";
 import { remarkPseudocode } from "./src/plugins/remark-pseudocode";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time";
 import { remarkTextColor } from "./src/plugins/remark-text-color";
+import { remarkTheorem } from "./src/plugins/remark-theorem";
 import { expressiveCodeOptions, siteConfig } from "./src/site.config";
 
 // https://astro.build/config
@@ -93,6 +94,7 @@ export default defineConfig({
 			remarkMath,
 			remarkDirective,
 			remarkColumns,
+			remarkTheorem,
 			remarkTextColor,
 			remarkPseudocode,
 			remarkGithubCard,

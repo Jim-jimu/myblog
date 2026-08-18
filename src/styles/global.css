@@ -83,6 +83,7 @@
 	@import "./components/inline-icon-link.css";
 	@import "./components/projects-card.css";
 	@import "./components/pseudocode.css";
+	@import "./components/theorem.css";
 
 	.typefolio-link {
 		@apply hover:decoration-link underline underline-offset-2 hover:decoration-2;
