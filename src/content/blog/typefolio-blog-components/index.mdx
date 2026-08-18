@@ -12,6 +12,7 @@ tldr:
 ---
 
 import { Icon } from "astro-icon/components";
+import coverImage from "../RL/cover.avif";
 
 This post demonstrates the various blog components and rich-content patterns built into Typefolio. If you want the lower-level Markdown reference, continue with the [Typefolio Markdown Reference](/blog/markdown-elements/).
 
@@ -135,6 +136,31 @@ When a post benefits from compact visual signposts, MDX can import `astro-icon` 
 		</p>
 	</div>
 </div>
+
+::::columns
+:::column[Formula]
+支持普通 Markdown 和公式：
+
+$$
+V(s)=\max_a\sum_{s'}P(s' \mid s,a)V(s')
+$$
+:::
+
+:::column[Image]
+支持图片和宽度控制：
+
+<img src={coverImage.src} alt="Description" style={{ width: "80%", height: "auto" }} />
+:::
+
+:::column[Code]
+支持现有代码高亮：
+
+```python
+def square(value):
+    return value * value
+```
+:::
+::::
 
 ## TLDR comes from frontmatter
 
